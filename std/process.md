@@ -1,4 +1,4 @@
-# Standard Library: Process (`std/process.zc`)
+# std/process
 
 The `std/process` module allows you to spawn and interact with child processes.
 

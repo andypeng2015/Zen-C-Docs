@@ -1,4 +1,4 @@
-# Standard Library: Map (`std/map.zc`)
+# std/map
 
 `Map<V>` is a generic hash map implementation mapping string keys to values of type `V`.
 

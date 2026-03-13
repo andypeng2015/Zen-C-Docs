@@ -1,4 +1,4 @@
-# Standard Library: BigInt (`std/bigint.zc`)
+# std/bigint
 
 `BigInt` provides arbitrary-precision integer arithmetic for Zen-C.
 

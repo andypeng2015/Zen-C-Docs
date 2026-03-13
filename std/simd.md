@@ -1,4 +1,4 @@
-# Standard Library: SIMD (`std/simd.zc`)
+# std/simd
 
 Zen C provides native SIMD (Single Instruction, Multiple Data) vector types that compile to hardware-optimized vector extensions.
 

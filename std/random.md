@@ -1,4 +1,4 @@
-# Standard Library: Random (`std/random.zc`)
+# std/random
 
 The `std/random` module provides an idiomatic, object-oriented pseudo-random number generator (PRNG) wrapper around POSIX `<stdlib.h>` functions.
 

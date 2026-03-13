@@ -1,4 +1,4 @@
-# Standard Library: JSON (`std/json.zc`)
+# std/json
 
 The `std/json` module provides a DOM-style JSON parser and builder implementation.
 

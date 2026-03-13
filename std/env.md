@@ -1,4 +1,4 @@
-# Standard Library: Env (`std/env.zc`)
+# std/env
 
 The `std/env` module provides access to process environment variables.
 

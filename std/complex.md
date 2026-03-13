@@ -1,4 +1,4 @@
-# Standard Library: Complex Number Library (`std/complex.zc`)
+# std/complex
 
 The `std/complex.zc` library provides the `Complex` struct and essential mathematical operations for working with complex numbers in Zen C.
 

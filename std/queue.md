@@ -1,4 +1,4 @@
-# Standard Library: Queue (`std/queue.zc`)
+# std/queue
 
 `Queue<T>` is a generic First-In-First-Out (FIFO) queue implemented as a **Ring Buffer (Circular Buffer)**.
 

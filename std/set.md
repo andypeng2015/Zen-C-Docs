@@ -1,4 +1,4 @@
-# Standard Library: Set (`std/set.zc`)
+# std/set
 
 The `std/set` module provides a Generic Hash Set `Set<T>`.
 

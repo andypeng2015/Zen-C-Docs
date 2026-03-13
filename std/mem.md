@@ -1,4 +1,4 @@
-# Standard Library: Memory (`std/mem.zc`)
+# std/mem
 
 The `std/mem` module provides core memory management utilities and standard traits for manual control and lifecycle management.
 

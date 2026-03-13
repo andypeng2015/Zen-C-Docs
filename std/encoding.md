@@ -1,4 +1,4 @@
-# Standard Library: Encoding (`std/encoding/`)
+# std/encoding
 
 The `std/encoding` module provides data encoding and decoding utilities.
 

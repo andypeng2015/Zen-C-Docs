@@ -1,4 +1,4 @@
-# Standard Library: Crypto (`std/crypto/`)
+# std/crypto
 
 The `std/crypto` module provides cryptographic primitives and hashing algorithms.
 

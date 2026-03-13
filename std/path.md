@@ -1,4 +1,4 @@
-# Standard Library: Path (`std/path.zc`)
+# std/path
 
 The `Path` module provides cross-platform file path manipulation utilities.
 

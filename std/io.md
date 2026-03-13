@@ -1,4 +1,4 @@
-# Standard Library: IO (`std/io.zc`)
+# std/io
 
 The `std/io` module provides standard input/output functionality, including printing to stdout and reading from stdin.
 

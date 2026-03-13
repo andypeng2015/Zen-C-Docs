@@ -1,4 +1,4 @@
-# Standard Library: Thread (`std/thread.zc`)
+# std/thread
 
 The `std/thread` module provides primitives for multithreading and synchronization.
 
