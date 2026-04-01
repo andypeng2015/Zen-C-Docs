@@ -37,7 +37,6 @@ jobs:
         run: |
           # Create targets
           mkdir -p www/docs.zenc-lang.org/content/tour/
-          mkdir -p www/docs.zenc-lang.org/translations/
           mkdir -p www/docs.zenc-lang.org/templates/
           
           # Sync docs content
@@ -45,7 +44,6 @@ jobs:
           
           # Sync site infrastructure (overwriting if exists)
           cp -r site/config.toml www/docs.zenc-lang.org/
-          cp -r site/translations/* www/docs.zenc-lang.org/translations/
           cp -r site/templates/* www/docs.zenc-lang.org/templates/
           
       - name: Commit and Push
