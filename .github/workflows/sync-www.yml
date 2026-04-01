@@ -5,6 +5,7 @@ on:
     paths:
       - 'raw/**'
       - 'scripts/split_reference.py'
+      - 'site/**'
       - '.github/workflows/sync-www.yml'
     branches:
       - main
