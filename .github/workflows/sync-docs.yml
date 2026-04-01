@@ -68,6 +68,22 @@ jobs:
              mv "$file" "$target"
           done
 
+          # Section Guard: Ensure _index.<lang>.md exists for all languages to prevent Zola build crash
+          LANGS="es pt it de ru zh-cn zh-tw"
+          find website/docs.zenc-lang.org/content/ -name "_index.md" | while read index_file; do
+            dir=$(dirname "$index_file")
+            for lang in $LANGS; do
+              lang_index="$dir/_index.$lang.md"
+              if [ ! -f "$lang_index" ]; then
+                echo "  [GUARD] Creating fallback for $lang_index"
+                cp "$index_file" "$lang_index"
+              fi
+            done
+          done
+
+          # Sync config.toml (Source of truth is docs/site/config.toml)
+          cp docs-repo/site/config.toml website/docs.zenc-lang.org/config.toml
+
           # Ensure all synced files have frontmatter (if missing)
           find website/docs.zenc-lang.org/content/ -name "*.md" | while read file; do
             if ! head -n 1 "$file" | grep -q "^+++"; then

@@ -218,6 +218,7 @@ async function walkAndTranslate() {
         for (const file of files) {
             if (file.match(/\.(es|pt|it|de|ru|zh-cn|zh-tw)\.md$/)) continue;
             if (!statSync(join(dir, file)).isFile()) continue;
+            if (dir === 'raw' && !file.startsWith('README')) continue; // only translate READMEs in raw/
 
             const baseName = file.substring(0, file.length - 3);
             const content = readFileSync(join(dir, file), 'utf8');
@@ -226,7 +227,9 @@ async function walkAndTranslate() {
 
             for (const lang of LANGUAGES) {
                 const outPath = join(dir, `${baseName}.${lang}.md`);
-                if (existsSync(outPath)) {
+
+                // Special handling for README files: always try to translate if they look incomplete
+                if (existsSync(outPath) && !file.startsWith('README')) {
                     const stats = statSync(outPath);
                     if (stats.size > 100) {
                         console.log(`  [SKIP] ${lang} already exists (${stats.size} bytes)`);
@@ -234,13 +237,17 @@ async function walkAndTranslate() {
                     }
                 }
 
-                console.log(`  [=> ${lang}] Creating...`);
-                const translated = await translateMarkdown(content, lang);
-                writeFileSync(outPath, translated);
-                console.log(`  [OK] Saved ${outPath}`);
-                await sleep(15000); // 15s between languages
+                console.log(`  [=> ${lang}] Translating...`);
+                try {
+                    const translated = await translateMarkdown(content, lang);
+                    writeFileSync(outPath, translated);
+                    console.log(`  [OK] Saved ${outPath}`);
+                } catch (err) {
+                    console.error(`  [FAILED] ${lang}: ${err.message}`);
+                }
+                await sleep(5000); // 5s between languages
             }
-            await sleep(30000); // 30s between files
+            await sleep(10000); // 10s between files
         }
     }
 }
