@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ lang }}" data-theme="light">
+<html lang="{{ lang | default(value=config.default_language) }}" data-theme="light">
+{% set lang = lang | default(value=config.default_language) %}
 
 <head>
     <meta charset="UTF-8">
