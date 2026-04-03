@@ -1282,7 +1282,6 @@ asm volatile {
 }
 ```
 
-
 #### Restrições Nomeadas
 Zen C simplifica a complexa restrição sintática do GCC com associações nomeadas.
 ```zc
@@ -1427,7 +1426,6 @@ fn main() {
 
 - **`import "file.h"`**: Registra o header como um módulo nomeado. Habilita acesso implícito aos símbolos (por exemplo, `file::function()`).
 - **`include <file.h>`**: Emite puramente `#include <file.h>` no código C gerado. Não introduz nenhum símbolo ao compilador Zen C; você deve usar `extern fn` para acessá-los.
-
 
 ---
 
@@ -1807,7 +1805,6 @@ zc run meu_arquivo.zc
 
 #### Asserções
 Use a função integrada `assert(condição, mensagem)` para verificar as expectativas. Se a condição for falsa, o teste falhará e imprimirá a mensagem fornecida.
-
 
 ---
 

@@ -1193,7 +1193,6 @@ println "In esecuzione su: {PLATFORM}";
 > [!TIP]
 > Usa raw strings (`r"..."`) in comptime per evitare di eseguire l'escape delle parentesi graffe: `code(r"fn test() { return 42; }")`. Altrimenti, usa `{{` e `}}` per l'escape nelle stringhe normali.
 
-
 #### Incorporati
 Incorpora file come tipi specificati.
 ```zc
@@ -1351,7 +1350,6 @@ fn aggiungi_cinque(x: int) -> int {
 
 > [!NOTE]
 > Quando si usa la sintassi Intel (via `-masm=intel`), dovrai assicurarti che la tua build sia configurata correttamente (per esempio, `//> cflags: -masm=intel`). TCC non supporta la sintassi assembly Intel.
-
 
 ### 15. Direttive della Build
 
@@ -1602,7 +1600,6 @@ zc repl
 
 ---
 
-
 ### Protocollo Server di Linguaggio (LSP)
 
 Zen C include un Server di Linguaggio integrato per l'integrazione con gli editor.
@@ -1808,7 +1805,6 @@ let i = thread_id(); // Indice globale
 let bid = block_id();
 let tid = local_id();
 ```
-
 
 > [!NOTE]
 > **Nota:** La flag `--cuda` imposta `nvcc` come compilatore e implica la modalità `--cpp`. Richiede l'installazione dell'NVIDIA CUDA Toolkit.

@@ -72,9 +72,12 @@ async function translateMarkdown(content, lang) {
     const processParagraph = async (rawParagraph) => {
         if (!rawParagraph.trim()) return rawParagraph;
 
+        // 0. Strip Rosetta MediaWiki templates
+        let cleanedParagraph = rawParagraph.replace(/\{\{trans\|.*?\}\}/g, '');
+
         // 1. Protect inline code
         let codeStore = [];
-        let p1 = rawParagraph.replace(/`([^`]+)`/g, (m, code) => {
+        let p1 = cleanedParagraph.replace(/`([^`]+)`/g, (m, code) => {
             codeStore.push(code);
             return `__CODE${codeStore.length - 1}__`;
         });

@@ -4,8 +4,6 @@ title = "Nth root"
 
 # Nth root
 
-{{trans|C}}
-
 ```zc
 def EPS = 2.220446e-016 * 10;
 
@@ -35,7 +33,7 @@ fn main()  {
 
 **Output:**
 
-```
+```zc
 root(15, -2.86578e+07) = -3.14159
 ```
 

@@ -305,7 +305,7 @@ fn main() {
 
 #### Arrays
 Festgrößen-Arrays mit Wertsemantik.
-```
+```zc
 def SIZE = 5;
 let ints: int[SIZE] = [1, 2, 3, 4, 5];
 let zeros: [int; SIZE]; // Nullinitialisiert
@@ -348,7 +348,7 @@ let (x, y: i32) = (1, 2);  // Gemischt: x abgeleitet, y explizit
 
 #### Structs
 Datenstrukturen mit optionalen Bitfeldern.
-```
+```zc
 struct Punkt {
     x: int;
     y: int;
@@ -1210,7 +1210,6 @@ println "Running on: {PLATFORM}";
 > [!TIP]
 > Verwende in der Kompilierzeit rohe Zeichenketten (`r"..."`), um das Maskieren von geschweiften Klammern zu vermeiden: `code(r"fn test() { return 42; }")`. Verwende andernfalls `{{` und `}}`, um geschweifte Klammern innerhalb regulärer Zeichenketten zu maskieren.
 
-
 #### Embed
 Binde Dateien als bestimmte Typen ein.
 ```zc
@@ -1487,7 +1486,6 @@ fn main() {
 
 - **`import "file.h"`**: Registriert Header als Modul; erlaubt impliziten Zugriff auf Symbole (`file::function()`).  
 - **`include <file.h>`**: Fügt nur `#include` in generiertes C ein; Symbole müssen mit `extern fn` manuell deklariert werden.
-
 
 ---
 

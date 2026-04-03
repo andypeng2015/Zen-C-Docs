@@ -1200,7 +1200,6 @@ println "Running on: {PLATFORM}";
 > [!TIP]
 > Use raw strings (`r"..."`) in comptime to avoid escaping braces: `code(r"fn test() { return 42; }")`. Otherwise, use `{{` and `}}` to escape braces inside regular strings.
 
-
 #### Embed
 Embed files as specified types.
 ```zc
@@ -1479,7 +1478,6 @@ fn main() {
 - **`import "file.h"`**: Registers the header as a named module. Enables implicit access to symbols (for example, `file::function()`).
 - **`include <file.h>`**: Purely emits `#include <file.h>` in the generated C code. Does not introduce any symbols to the Zen C compiler; you must use `extern fn` to access them.
 
-
 ---
 
 ## Standard Library
@@ -1615,7 +1613,6 @@ zc repl
 | `! <cmd>` | Run a shell command (e.g. `!ls`). |
 
 ---
-
 
 ### Language Server Protocol (LSP)
 
@@ -1822,7 +1819,6 @@ let i = thread_id(); // Global index
 let bid = block_id();
 let tid = local_id();
 ```
-
 
 > [!NOTE]
 > **Note:** The `--cuda` flag sets `nvcc` as the compiler and implies `--cpp` mode. Requires the NVIDIA CUDA Toolkit.

@@ -84,8 +84,12 @@ jobs:
           # Sync config.toml (Source of truth is docs/site/config.toml)
           cp docs-repo/site/config.toml website/docs.zenc-lang.org/config.toml
 
-          # Ensure all synced files have frontmatter (if missing)
+          # Ensure all synced files have frontmatter (if missing) and clean Rosetta templates
           find website/docs.zenc-lang.org/content/ -name "*.md" | while read file; do
+            # 1. Clean Rosetta templates ({{trans|...}})
+            sed -i 's/{{trans|.*}}//g' "$file"
+
+            # 2. Add frontmatter if missing
             if ! head -n 1 "$file" | grep -q "^+++"; then
               TITLE=$(grep -m 1 "^# " "$file" | sed 's/^# //; s/"/\\"/g' || echo "Documentation")
               TEMP=$(mktemp)

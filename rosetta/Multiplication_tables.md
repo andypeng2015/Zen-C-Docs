@@ -4,8 +4,6 @@ title = "Multiplication tables"
 
 # Multiplication tables
 
-{{trans|C}}
-
 ```zc
 fn main() {
     let n: const int = 12;
@@ -23,7 +21,7 @@ fn main() {
 
 **Output:**
 
-```
+```zc
 1   2   3   4   5   6   7   8   9  10  11  12
 ------------------------------------------------+
   1   2   3   4   5   6   7   8   9  10  11  12 | 1

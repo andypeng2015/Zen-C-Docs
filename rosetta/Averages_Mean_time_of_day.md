@@ -4,8 +4,6 @@ title = "Averages/Mean time of day"
 
 # Averages/Mean time of day
 
-{{trans|Wren}}
-
 ```zc
 import "std/math.zc"
 
@@ -51,7 +49,7 @@ fn main() {
 
 **Output:**
 
-```
+```zc
 Mean time of day is : 23:47:43
 ```
 

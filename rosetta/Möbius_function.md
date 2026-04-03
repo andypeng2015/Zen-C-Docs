@@ -4,8 +4,6 @@ title = "Möbius function"
 
 # Möbius function
 
-{{trans|Wren}}
-
 ```zc
 import "std/vec.zc"
 
@@ -77,7 +75,7 @@ fn main() {
 
 **Output:**
 
-```
+```zc
 The first 199 Möbius numbers are:
       1  -1  -1   0  -1   1  -1   0   0   1  -1   0  -1   1   1   0  -1   0  -1 
   0   1   1  -1   0   0   1   0   0  -1  -1  -1   0   1   1   1   0  -1   1   1 

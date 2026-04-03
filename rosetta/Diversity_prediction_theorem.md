@@ -4,8 +4,6 @@ title = "Diversity prediction theorem"
 
 # Diversity prediction theorem
 
-{{trans|Go}}
-
 ```zc
 fn average_square_diff(f: f64, preds: f64*, size: usize) -> f64 {
     let sum = 0.0;
@@ -46,7 +44,7 @@ fn main() {
 
 **Output:**
 
-```
+```zc
 Average-error  3.000
 Crowd-error    0.111
 Diversity      2.889

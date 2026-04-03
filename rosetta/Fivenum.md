@@ -4,8 +4,6 @@ title = "Fivenum"
 
 # Fivenum
 
-{{trans|Wren}}
-
 ```zc
 import "std/sort.zc"
 import "std/math.zc"
@@ -50,7 +48,7 @@ fn main() {
 
 **Output:**
 
-```
+```zc
 [7, 15, 37.5, 40, 41]
 [6, 25.5, 40, 42.5, 49]
 [-1.95059594, -0.676741205, 0.23324706, 0.746070945, 1.73131507]

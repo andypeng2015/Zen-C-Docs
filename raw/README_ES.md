@@ -655,7 +655,6 @@ externo: loop {
 for _ in 0..5 { ... }
 ```
 
-
 #### Control Avanzado
 ```zc
 // Guard: Ejecuta else y retorna si la condición es falsa
@@ -1201,7 +1200,6 @@ println "Ejecutando en: {PLATFORM}";
 > [!TIP]
 > Usa raw strings (`r"..."`) en comptime para evitar escapar llaves: `code(r"fn test() { return 42; }")`. De lo contrario, usa `{{` y `}}` para escapar llaves en strings regulares.
 
-
 #### Embed
 Embebe archivos como los tipos especificados.
 ```zc
@@ -1474,7 +1472,6 @@ fn main() {
 - **`import "file.h"`**: Registra la cabecera como un módulo con nombre. Habilita el acceso implícito a símbolos (ej. `file::function()`).
 - **`include <file.h>`**: Puramente emite `#include <file.h>` en el código C generado. No introduce ningún símbolo al compilador de Zen C; debes usar `extern fn` para acceder a ellos.
 
-
 ---
 
 ## Biblioteca Estándar
@@ -1612,7 +1609,6 @@ zc repl
 | `! <cmd>` | Ejecuta un comando de shell (ej. `!ls`). |
 
 ---
-
 
 ### Protocolo de Servidor de Lenguaje (LSP)
 
@@ -1820,7 +1816,6 @@ let bid = block_id();
 let tid = local_id();
 ```
 
-
 > [!NOTE]
 > **Nota:** La flag `--cuda` establece `nvcc` como el compilador e implica el modo `--cpp`. Requiere el NVIDIA CUDA Toolkit.
 
@@ -1863,7 +1858,6 @@ fn main() {
 
 > [!NOTE]
 > **Nota:** La interpolación de cadenas de Zen C funciona con objetos de Objective-C (`id`) llamando a `debugDescription` o `description`.
-
 
 ## Contribuyendo
 

@@ -8,7 +8,7 @@ weight = 3
 
 #### Arrays
 Festgrößen-Arrays mit Wertsemantik.
-```
+```zc
 def SIZE = 5;
 let ints: int[SIZE] = [1, 2, 3, 4, 5];
 let zeros: [int; SIZE]; // Nullinitialisiert
@@ -51,7 +51,7 @@ let (x, y: i32) = (1, 2);  // Gemischt: x abgeleitet, y explizit
 
 #### Structs
 Datenstrukturen mit optionalen Bitfeldern.
-```
+```zc
 struct Punkt {
     x: int;
     y: int;

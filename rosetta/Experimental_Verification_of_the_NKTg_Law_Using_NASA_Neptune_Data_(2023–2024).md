@@ -4,8 +4,6 @@ title = "Experimental Verification of the NKTg Law Using NASA Neptune Data (2023
 
 # Experimental Verification of the NKTg Law Using NASA Neptune Data (2023–2024)
 
-{{trans|Q#}}
-
 ```zc
 import "std/math.zc"
 
@@ -71,7 +69,7 @@ fn main() {
 
 **Output:**
 
-```
+```zc
 
 ############################################ NKTg Law - Neptune 2023 NASA Data
 
