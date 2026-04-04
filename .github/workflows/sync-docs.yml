@@ -26,17 +26,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Translation Dependencies
-        run: |
-          cd docs-repo
-          npm install @vitalets/google-translate-api
-
-      - name: Run Translation Engine (Best Effort)
-        run: |
-          cd docs-repo
-          node scripts/translate_docs.js || echo "Translation encountered an issue, proceeding with available content."
-        continue-on-error: true
-
       - name: Split Language Reference
         run: |
           cd docs-repo
