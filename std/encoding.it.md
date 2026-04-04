@@ -1,6 +1,6 @@
 # std/encoding
 
-Il modulo `std/encoding` fornisce utilità per la codifica e decodifica dei dati.
+Il modulo `std/encoding` fornisce utilità per la codifica e la decodifica dei dati.
 
 ## Base64 (`std/encoding/base64.zc`)
 
@@ -45,5 +45,5 @@ fn main() {
 
 | Metodo | Firma | Descrizione |
 | :--- | :--- | :--- |
-| **encode** | `Hex::encode(data: u8*, len: usize) -> String` | Codifica i dati in una stringa esadecimale. |
-| **decode** | `Hex::decode(hex: String) -> Result<Vec<u8>>` | Decodifica una stringa esadecimale in byte grezzi. |
+| **encode** | `Hex::encode(data: u8*, len: usize) -> String` | Codifica i dati in una stringa Hex. |
+| **decode** | `Hex::decode(hex: String) -> Result<Vec<u8>>" | Decodifica una stringa Hex in byte grezzi. |

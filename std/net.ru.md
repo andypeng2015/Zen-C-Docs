@@ -1,6 +1,6 @@
 # std/net
 
-Модуль `std/net` предоставляет полный сетевой стек, включая TCP, UDP, DNS и HTTP.
+Модуль `std/net` предоставляет комплексный сетевой стек, включая TCP, UDP, DNS и HTTP.
 
 ## Использование
 
@@ -8,7 +8,7 @@
 import "std/net/tcp.zc"  // TcpStream, TcpListener
 import "std/net/udp.zc"  // UdpSocket
 import "std/net/http.zc" // HTTP клиент/сервер
-import "std/net/dns.zc"  // Разрешение DNS имен
+import "std/net/dns.zc"  // Разрешение DNS
 import "std/net/url.zc"  // Парсинг URL
 import "std/net/websocket.zc" // WebSocket
 ```
@@ -22,14 +22,14 @@ import "std/net/websocket.zc" // WebSocket
 | Метод | Сигнатура | Описание |
 | :--- | :--- | :--- |
 | **handshake** | `WebSocket::handshake(stream: TcpStream, key: String) -> Result<WebSocket>` | Выполняет рукопожатие на стороне сервера. |
-| **recv** | `recv(self) -> Result<String>` | Получает текстовый фрейм (с выполнением демаскирования). |
+| **recv** | `recv(self) -> Result<String>` | Получает текстовый фрейм (обрабатывает демаскирование). |
 | **send** | `send(self, msg: String) -> Result<int>` | Отправляет текстовый фрейм. |
 
 ## HTTP клиент и сервер (`std/net/http.zc`)
 
 ### Тип `Server`
 
-Простой HTTP-сервер с поддержкой многопоточности.
+Простой многопоточный HTTP-сервер.
 
 | Метод | Сигнатура | Описание |
 | :--- | :--- | :--- |
@@ -48,7 +48,7 @@ import "std/net/websocket.zc" // WebSocket
 
 | Метод | Сигнатура | Описание |
 | :--- | :--- | :--- |
-| **parse** | `Url::parse(s: String) -> Option<Url>` | Разбирает строку URL. |
+| **parse** | `Url::parse(s: String) -> Option<Url>` | Парсит строку URL. |
 
 ## TCP (`std/net/tcp.zc`)
 
@@ -75,7 +75,7 @@ import "std/net/websocket.zc" // WebSocket
 | :--- | :--- | :--- |
 | **bind** | `UdpSocket::bind(host: char*, port: int) -> Result<UdpSocket>` | Привязывается к локальному адресу. |
 | **recv_from** | `recv_from(self, buf: char*, len: usize) -> Result<UdpRecvResult>` | Получает данные и информацию об отправителе. |
-| **send_to** | `send_to(self, buf: char*, len: usize, host: char*, port: int) -> Result<usize>` | Отправляет данные по указанному адресу. |
+| **send_to** | `send_to(self, buf: char*, len: usize, host: char*, port: int) -> Result<usize>` | Отправляет данные по конкретному адресу. |
 
 ## DNS (`std/net/dns.zc`)
 
@@ -84,13 +84,3 @@ import "std/net/websocket.zc" // WebSocket
 | Метод | Сигнатура | Описание |
 | :--- | :--- | :--- |
 | **resolve** | `Dns::resolve(host: char*) -> Result<String>` | Разрешает доменное имя в IP-адрес. |
-走
-走
-走
-走
-走
-走
-走
-走
-走
-走

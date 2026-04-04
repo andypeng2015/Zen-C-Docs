@@ -1,6 +1,6 @@
 # std/map
 
-`Map<V>` è un'implementazione di mappa hash generica che associa chiavi stringa a valori di tipo `V`.
+`Map<V>` è un'implementazione generica di una tabella hash che mappa chiavi stringa a valori di tipo `V`.
 
 ## Utilizzo
 
@@ -22,7 +22,7 @@ fn main() {
 } // m viene liberata automaticamente qui
 ```
 
-## Definizione della Struttura
+## Definizione Struct
 
 ```zc
 struct Map<V> {
@@ -42,7 +42,7 @@ struct Map<V> {
 
 ### Iterazione
 
-Puoi iterare sulle coppie chiave-valore della mappa utilizzando un ciclo `for`.
+È possibile iterare sulle coppie chiave-valore della mappa utilizzando un ciclo `for`.
 
 ```zc
 let m = Map<int>::new();
@@ -53,7 +53,7 @@ for entry in m {
 }
 ```
 
-L'iteratore restituisce una struttura `MapEntry<V>`:
+L'iteratore restituisce una struct `MapEntry<V>`:
 ```zc
 struct MapEntry<V> {
     key: char*;
@@ -68,7 +68,7 @@ struct MapEntry<V> {
 | **put** | `put(self, key: char*, val: V)` | Inserisce o aggiorna una coppia chiave-valore. |
 | **remove** | `remove(self, key: char*)` | Rimuove una chiave e il suo valore dalla mappa. |
 
-### Accesso e Interrogazione
+### Accesso e Query
 
 | Metodo | Firma | Descrizione |
 | :--- | :--- | :--- |
@@ -76,9 +76,9 @@ struct MapEntry<V> {
 | **contains** | `contains(self, key: char*) -> bool` | Restituisce true se la chiave esiste. |
 | **length** | `length(self) -> usize` | Restituisce il numero di elementi nella mappa. |
 | **is_empty** | `is_empty(self) -> bool` | Restituisce true se la mappa è vuota. |
-| **capacity** | `capacity(self) -> usize` | Restituisce la capacità corrente della mappa. |
+| **capacity** | `capacity(self) -> usize" | Restituisce la capacità attuale della mappa. |
 
-### Supporti per l'Iterazione
+### Aiuti per l'Iterazione
 
 | Metodo | Firma | Descrizione |
 | :--- | :--- | :--- |
@@ -91,4 +91,4 @@ struct MapEntry<V> {
 | Metodo | Firma | Descrizione |
 | :--- | :--- | :--- |
 | **free** | `free(self)` | Libera lo storage interno della mappa. **Nota**: Questo non libera i valori se sono puntatori/oggetti. |
-| **Tratto** | `impl Drop for Map` | Chiama automaticamente `free()` quando esce dall'ambito. |
+| **Trait** | `impl Drop for Map` | Chiama automaticamente `free()` quando esce dallo scope. |

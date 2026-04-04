@@ -1,11 +1,11 @@
 # std/encoding/hex
 
-Il modulo `std/encoding/hex` fornisce utilità per la codifica e decodifica esadecimale dei dati.
+Il modulo `std/encoding/hex` fornisce utilità per la codifica e la decodifica esadecimale dei dati.
 
 ## Panoramica
 
-- **Codifica**: Converte i byte grezzi in una stringa esadecimale.
-- **Decodifica**: Converte una stringa esadecimale nuovamente in byte grezzi (`Vec<u8>`).
+- **Codifica**: Converte byte grezzi in una stringa esadecimale.
+- **Decodifica**: Converte una stringa esadecimale in byte grezzi (`Vec<u8>`).
 
 ## Utilizzo
 
@@ -26,7 +26,7 @@ fn main() {
 }
 ```
 
-## Definizione della Struttura
+## Definizione Struct
 
 ```zc
 struct Hex {}
@@ -38,5 +38,5 @@ struct Hex {}
 
 | Metodo | Firma | Descrizione |
 | :--- | :--- | :--- |
-| **encode** | `Hex::encode(data: u8*, len: usize) -> String` | Codifica i dati grezzi in una stringa esadecimale. |
+| **encode** | `Hex::encode(data: u8*, len: usize) -> String` | Codifica dati grezzi in una stringa esadecimale. |
 | **decode** | `Hex::decode(hex: String) -> Result<Vec<u8>>` | Decodifica una stringa esadecimale in un `Vec<u8>`. |

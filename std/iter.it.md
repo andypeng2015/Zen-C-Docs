@@ -1,6 +1,6 @@
 # std/iter
 
-Il modulo `std/iter` fornisce i tratti (traits) per definire iteratori personalizzati compatibili con la sintassi del ciclo `for-in` di Zen C.
+Il modulo `std/iter` fornisce i trait per definire iteratori personalizzati compatibili con la sintassi del ciclo `for-in` di Zen C.
 
 ## Utilizzo
 
@@ -8,14 +8,14 @@ Il modulo `std/iter` fornisce i tratti (traits) per definire iteratori personali
 import "std/iter.zc"
 
 fn main() {
-    // Supponendo che la mia_collezione implementi Iterable<T>
-    for item in mia_collezione {
+    // Supponendo che my_collection implementi Iterable<T>
+    for item in my_collection {
         // ...
     }
 }
 ```
 
-## Tratti (Traits)
+## Trait
 
 ### `Iterator<T>`
 

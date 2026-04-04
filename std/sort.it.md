@@ -1,6 +1,6 @@
 # std/sort
 
-Il modulo `std/sort` fornisce algoritmi di ordinamento altamente ottimizzati. Implementa nativamente l'algoritmo `QuickSort` utilizzando un motore di macro polimorfiche a zero overhead.
+Il modulo `std/sort` fornisce algoritmi di ordinamento altamente ottimizzati. Implementa nativamente l'algoritmo `QuickSort` utilizzando un motore macro polimorfico a zero-overhead.
 
 ## Utilizzo
 
@@ -30,4 +30,3 @@ Se crei una `struct` personalizzata con l'overloading dell'operatore `<`, puoi g
 // Emette `sort_MyStruct(MyStruct* arr, usize len)`
 raw { ZC_IMPL_SORT(MyStruct) } 
 ```
-走

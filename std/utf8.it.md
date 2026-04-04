@@ -1,6 +1,6 @@
 # std/utf8
 
-Il modulo `std/utf8` fornisce utilità per lavorare con i punti di codice Unicode (tipo `rune`) e la codifica UTF-8.
+Il modulo `std/utf8` fornisce utilità per lavorare con i code point Unicode (tipo `rune`) e la codifica UTF-8.
 
 ## Utilizzo
 
@@ -18,7 +18,7 @@ fn main() {
 
 ## Metodi
 
-### Interrogazione e Identificazione
+### Query e Identificazione
 
 | Metodo | Firma | Descrizione |
 | :--- | :--- | :--- |
@@ -41,6 +41,5 @@ fn main() {
 | Metodo | Firma | Descrizione |
 | :--- | :--- | :--- |
 | **encode** | `encode(r: rune, buf: char*) -> usize` | Codifica una rune in UTF-8. Restituisce i byte scritti (1-4). |
-| **rune_len** | `rune_len(r: rune) -> usize` | Restituisce il numero di byte necessari per codificare la rune. |
+| **rune_len** | `rune_len(r: rune) -> usize` | Restituisce il numero di byte richiesti per codificare la rune. |
 | **decode** | `decode(data: char*, len: usize, consumed: usize*) -> rune` | Decodifica la prima sequenza UTF-8 dai dati. |
-走
