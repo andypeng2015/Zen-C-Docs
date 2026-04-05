@@ -569,11 +569,11 @@ fn log(lvl: int, fmt: char*, ...) {
 #### Bedingte Anweisungen
 ```zc
 if x > 10 {
-    print("Groß");
+    print "Groß";
 } else if x > 5 {
-    print("Mittel");
+    print "Mittel";
 } else {
-    print("Klein");
+    print "Klein";
 }
 
 // Ternäroperator
@@ -602,7 +602,7 @@ match wert {
 match form {
     Form::Kreis(r)       => { println "Radius: {r}" },
     Form::Rechteck(w, h) => { println "Fläche: {w*h}" },
-    Form::Punkt          => { println "Punkt" },
+    Form::Point          => { println "Point" },
 }
 ```
 

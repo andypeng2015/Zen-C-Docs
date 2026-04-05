@@ -566,11 +566,11 @@ fn log(lvl: int, fmt: char*, ...) {
 #### Condicionales
 ```zc
 if x > 10 {
-    print("Grande");
+    print "Grande";
 } else if x > 5 {
-    print("Mediano");
+    print "Mediano";
 } else {
-    print("Pequeño");
+    print "Pequeño";
 }
 
 // Ternario
