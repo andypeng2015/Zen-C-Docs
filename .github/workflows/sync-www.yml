@@ -42,10 +42,6 @@ jobs:
           # Sync docs content
           cp -r reference/* www/docs.zenc-lang.org/content/tour/
           
-          # Sync site infrastructure (overwriting if exists)
-          cp -r site/config.toml www/docs.zenc-lang.org/
-          cp -r site/templates/* www/docs.zenc-lang.org/templates/
-          
       - name: Commit and Push
         run: |
           cd www

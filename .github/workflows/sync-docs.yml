@@ -70,9 +70,6 @@ jobs:
             done
           done
 
-          # Sync config.toml (Source of truth is docs/site/config.toml)
-          cp docs-repo/site/config.toml website/docs.zenc-lang.org/config.toml
-
           # Ensure all synced files have frontmatter (if missing) and clean Rosetta templates
           find website/docs.zenc-lang.org/content/ -name "*.md" | while read file; do
             # 1. Clean Rosetta templates ({{trans|...}})
