@@ -1,8 +1,20 @@
 <!DOCTYPE html>
-<html lang="{{ lang | default(value=config.default_language) }}" data-theme="light">
+<html lang="{{ lang | default(value=config.default_language) }}">
 {% set lang = lang | default(value=config.default_language) %}
 
 <head>
+    <script>
+        (function () {
+            try {
+                const theme = localStorage.getItem('theme') ||
+                    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme',
+                    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            }
+        })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if section.title %}{{ section.title }}{% elif page.title %}{{ page.title }}{% else %}{{ config.title }}{%
@@ -49,6 +61,15 @@
             box-sizing: border-box;
         }
 
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background: var(--bg);
@@ -87,6 +108,13 @@
             font-size: 1.25rem;
             color: var(--primary);
             letter-spacing: -0.05em;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .logo:hover {
+            opacity: 0.8;
+            text-decoration: none;
         }
 
         .logo .version {
@@ -97,14 +125,20 @@
 
         nav {
             display: flex;
-            gap: 2rem;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
             align-items: center;
         }
 
         nav a {
             text-decoration: none;
             color: var(--muted);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 500;
             transition: color 0.2s;
         }
@@ -116,6 +150,10 @@
         nav a.active {
             color: var(--primary);
             font-weight: 700;
+        }
+
+        .home-link {
+            margin-right: 1.5rem;
         }
 
         /* Language Dropdown */
@@ -421,24 +459,105 @@
         }
 
         .doc-content code {
-            background: #f1f5f9;
-            padding: 3px 6px;
-            border: 1px solid var(--border);
+            background: transparent;
+            padding: 0 0.1rem;
+            border: none;
             border-radius: 4px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
+            font-size: 1em;
             color: var(--typ);
         }
 
+        /* ── Zen Garden Code Snippet Boxes (Simplified Diagonal) ── */
         .doc-content pre {
-            background: #ffffff;
             padding: 1.5rem;
-            border: 1px solid var(--border);
             border-radius: 8px;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
             overflow-x: auto;
             position: relative;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #cbd5e1;
+            background-color: #fdfbf7;
+            background-image:
+                repeating-linear-gradient(45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(180, 170, 150, 0.08) 10px,
+                    rgba(180, 170, 150, 0.08) 11px);
             box-shadow: none;
+        }
+
+        /* The Stone Decoration (and Copy Button handle) */
+        .doc-content pre::before {
+            content: '';
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            width: 24px;
+            height: 20px;
+            border-radius: 50% 60% 50% 40%;
+            background: radial-gradient(ellipse at 30% 30%, #d1d5db, #9ca3af);
+            opacity: 0.35;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+            pointer-events: none;
+            /* Let the button underneath handle clicks */
+            z-index: 5;
+        }
+
+        .doc-content pre:hover::before {
+            opacity: 0.7;
+            transform: scale(1.05);
+        }
+
+        /* Functional Copy Button (matches stone position) */
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            width: 32px;
+            height: 28px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .doc-content pre:hover .copy-button {
+            opacity: 1;
+        }
+
+        .copy-button svg {
+            width: 14px;
+            height: 14px;
+            fill: #94a3b8;
+            transition: fill 0.2s;
+            display: none;
+            /* Hide icon, keep stone as the button */
+        }
+
+        .doc-content pre::after {
+            display: none;
+            /* Remove second stone */
+        }
+
+        /* Global Link Styling — Zen Palette */
+        .doc-content a,
+        .admonition-content .z-link {
+            color: var(--fn);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .doc-content a:hover,
+        .admonition-content a:hover {
+            opacity: 0.8;
         }
 
         .doc-content pre code {
@@ -448,6 +567,62 @@
             color: var(--fg);
             font-size: 0.9rem;
             line-height: 1.6;
+        }
+
+        /* ── Zen C Syntax Highlighting ── */
+        /* Success animation */
+        .copy-success::before {
+            background: radial-gradient(ellipse at 30% 30%, #6ee7b7, #059669) !important;
+            opacity: 0.8 !important;
+            transform: scale(1.1);
+        }
+
+        .z-keyword {
+            color: var(--kwd);
+            font-weight: 700;
+        }
+
+        .z-storage {
+            color: var(--kwd);
+            font-weight: 700;
+        }
+
+        .z-entity {
+            color: var(--fn);
+        }
+
+        .z-type {
+            color: var(--typ);
+        }
+
+        .z-string {
+            color: var(--str);
+        }
+
+        .z-constant {
+            color: var(--str);
+        }
+
+        .z-comment {
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        .z-meta {
+            color: var(--secondary);
+        }
+
+        .z-punctuation {
+            color: var(--muted);
+            opacity: 0.8;
+        }
+
+        .z-operator {
+            color: var(--primary);
+        }
+
+        .z-interpolation {
+            color: var(--fg);
         }
 
         .doc-content table {
@@ -577,66 +752,56 @@
             }
         }
 
-        /* NEWSLETTER DOCS OVERRIDES */
-        .sidebar-newsletter {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .sidebar-newsletter h4 {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 1rem;
-        }
-
-        .sidebar-newsletter p {
-            font-size: 0.8rem;
-            color: var(--muted);
-            margin-bottom: 1rem;
-            line-height: 1.4;
-        }
-
-        .sidebar-newsletter .newsletter-form {
+        /* NEWSLETTER STYLING (FOOTER ONLY) */
+        .newsletter-form {
+            display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            width: 100%;
         }
 
-        .sidebar-newsletter input[type="email"] {
-            width: 100%;
-            font-size: 0.8rem;
+        .btn-subscribe {
+            background: var(--primary);
+            color: var(--bg);
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .sidebar-newsletter .btn-subscribe {
+        .btn-subscribe:hover {
+            opacity: 0.85;
+        }
+
+        input[type="email"] {
             width: 100%;
-            font-size: 0.8rem;
-            padding: 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            color: var(--fg);
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        input[type="email"]:focus {
+            border-color: var(--fn);
         }
 
         /* FOOTER NEWSLETTER */
         .newsletter-form-footer {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.75rem;
             width: 100%;
-        }
-
-        .newsletter-form-footer input[type="email"] {
-            width: 100%;
-            background: #ffffff;
-            border: 1px solid var(--border);
-            padding: 8px 12px;
-            font-size: 0.85rem;
-            border-radius: 4px;
-            color: var(--fg);
-            outline: none;
-        }
-
-        .newsletter-form-footer .btn-subscribe:hover {
-            background: #fff;
         }
 
         /* --- Theme Toggle in Docs --- */
@@ -701,12 +866,34 @@
         }
 
         [data-theme="dark"] .doc-content code {
-            background: var(--surface-alt);
+            background: transparent;
         }
 
         [data-theme="dark"] .doc-content pre {
-            background: var(--bg);
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+            background-color: #121211;
+            border-color: #2d2d2a;
+            border-left-color: #475569;
+            background-image:
+                repeating-linear-gradient(45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(255, 255, 255, 0.02) 10px,
+                    rgba(255, 255, 255, 0.02) 11px);
+            box-shadow: none;
+        }
+
+        [data-theme="dark"] .doc-content pre::before {
+            background: radial-gradient(ellipse at 30% 30%, #64748b, #334155);
+            opacity: 0.25;
+        }
+
+        [data-theme="dark"] .doc-content pre:hover::before {
+            opacity: 0.5;
+            background: radial-gradient(ellipse at 30% 30%, #94a3b8, #475569);
+        }
+
+        [data-theme="dark"] .doc-content pre::after {
+            display: none;
         }
 
         [data-theme="dark"] .doc-content th {
@@ -714,26 +901,234 @@
         }
 
         [data-theme="dark"] .doc-content td:nth-child(2) {
-            background: rgba(0, 0, 0, 2);
+            background: transparent;
         }
 
         [data-theme="dark"] .doc-content tr:hover {
             background: rgba(255, 255, 255, 0.02);
         }
 
-        [data-theme="dark"] .newsletter-form-footer input[type="email"] {
+        [data-theme="dark"] input[type="email"] {
             background: var(--surface-alt);
         }
 
         @media (prefers-color-scheme: dark) {
             html:not([data-theme="light"]) .doc-content code {
-                background: var(--surface-alt);
+                background: transparent;
             }
 
             html:not([data-theme="light"]) .doc-content pre {
-                background: var(--bg);
-                box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+                background-color: #121211;
+                border-color: #2d2d2a;
+                border-left-color: #475569;
+                background-image:
+                    repeating-linear-gradient(45deg,
+                        transparent,
+                        transparent 10px,
+                        rgba(255, 255, 255, 0.02) 10px,
+                        rgba(255, 255, 255, 0.02) 11px);
+                box-shadow: none;
             }
+        }
+
+        /* ═══════════════════════════════════════════════
+           ADMONITIONS — 枯山水 (Karesansui) Zen Garden
+           ═══════════════════════════════════════════════ */
+        .admonition {
+            margin: 2rem 0;
+            padding: 1.5rem 1.75rem;
+            border-radius: 8px;
+            border: 1px solid #d5cec0;
+            border-left: none;
+            position: relative;
+            overflow: hidden;
+            /* Sand base */
+            background-color: #f5f0e8;
+            /* Raked sand lines */
+            background-image:
+                repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 7px,
+                    rgba(180, 170, 150, 0.18) 7px,
+                    rgba(180, 170, 150, 0.18) 8px);
+        }
+
+        /* The stone — a smooth pebble in the corner */
+        .admonition::before {
+            content: '';
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50% 50% 50% 42%;
+            background: radial-gradient(ellipse at 35% 35%, #c9c0b0, #a89f8f);
+            opacity: 0.5;
+            box-shadow:
+                1px 2px 4px rgba(0, 0, 0, 0.08),
+                inset -2px -2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .admonition-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0;
+            margin-bottom: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #8b7e6a;
+            border: none;
+            background: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .admonition-title svg {
+            flex-shrink: 0;
+            opacity: 0.7;
+        }
+
+        .admonition-content {
+            padding: 0;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: #3d3628;
+            position: relative;
+            z-index: 1;
+        }
+
+        .admonition-content p {
+            color: #3d3628;
+        }
+
+        .admonition-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .admonition-content ul,
+        .admonition-content ol {
+            margin-bottom: 0;
+        }
+
+        .admonition-content code {
+            padding: 0 0.1rem;
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1em;
+            background: transparent;
+            border: none;
+            color: inherit;
+        }
+
+        .admonition-content strong {
+            color: #2c2518;
+        }
+
+        /* Per-type stone colors */
+        .admonition-note::before {
+            background: radial-gradient(ellipse at 35% 35%, #9ca3af, #6b7280);
+        }
+
+        .admonition-note .admonition-title {
+            color: #6b7280;
+        }
+
+        .admonition-tip::before {
+            background: radial-gradient(ellipse at 35% 35%, #6ee7b7, #059669);
+        }
+
+        .admonition-tip .admonition-title {
+            color: #047857;
+        }
+
+        .admonition-warning::before {
+            background: radial-gradient(ellipse at 35% 35%, #fcd34d, #d97706);
+        }
+
+        .admonition-warning .admonition-title {
+            color: #92400e;
+        }
+
+        .admonition-important::before {
+            background: radial-gradient(ellipse at 35% 35%, #c4b5fd, #7c3aed);
+        }
+
+        .admonition-important .admonition-title {
+            color: #6d28d9;
+        }
+
+        .admonition-caution::before {
+            background: radial-gradient(ellipse at 35% 35%, #fca5a5, #dc2626);
+        }
+
+        .admonition-caution .admonition-title {
+            color: #991b1b;
+        }
+
+        /* ── Dark Mode: Night Garden ── */
+        [data-theme="dark"] .admonition {
+            background-color: #1a1916;
+            border-color: #2d2a24;
+            background-image:
+                repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 7px,
+                    rgba(120, 110, 90, 0.1) 7px,
+                    rgba(120, 110, 90, 0.1) 8px);
+        }
+
+        [data-theme="dark"] .admonition::before,
+        [data-theme="dark"] .doc-content pre::before {
+            opacity: 0.35;
+            background: radial-gradient(ellipse at 35% 35%, #94a3b8, #475569);
+        }
+
+        [data-theme="dark"] .doc-content pre::after {
+            opacity: 0.2;
+            background: radial-gradient(ellipse at 35% 35%, #475569, #1e293b);
+        }
+
+        [data-theme="dark"] .admonition-title {
+            color: #a89f8f;
+        }
+
+        [data-theme="dark"] .admonition-content,
+        [data-theme="dark"] .admonition-content p {
+            color: #d5cec0;
+        }
+
+        [data-theme="dark"] .admonition-content strong {
+            color: #f0ece4;
+        }
+
+        [data-theme="dark"] .admonition-content code {
+            background: transparent;
+            border: none;
+            color: inherit;
+        }
+
+        [data-theme="dark"] .admonition-note .admonition-title {
+            color: #94a3b8;
+        }
+
+        [data-theme="dark"] .admonition-tip .admonition-title {
+            color: #6ee7b7;
+        }
+
+        [data-theme="dark"] .admonition-warning .admonition-title {
+            color: #fcd34d;
+        }
+
+        [data-theme="dark"] .admonition-important .admonition-title {
+            color: #c4b5fd;
+        }
+
+        [data-theme="dark"] .admonition-caution .admonition-title {
+            color: #fca5a5;
         }
     </style>
 </head>
@@ -742,14 +1137,18 @@
 
     <header>
         <div class="container nav-container">
-            <div class="logo">Zen C <span class="version">{{ config.extra.version }}</span></div>
+            <a href="{% if lang == 'en' %}https://zenc-lang.org/{% else %}https://zenc-lang.org/{{ lang }}/{% endif %}"
+                class="logo">Zen C <span class="version">{{
+                    config.extra.version }}</span></a>
             <nav>
-                <a href="https://zenc-lang.org{% if lang != 'en' %}/{{ lang }}{% endif %}/">{% if lang == "en" %}Home{% else %}{{ trans(key="ui-home") }}{% endif
-                    %}</a>
-                <a href="{{ get_url(path="/", lang=lang) }}" class="active">{% if lang == "en" %}Docs{% else %}{{
-                    trans(key="ui-docs") }}{% endif %}</a>
-                <a href="https://git.zenc-lang.org">{% if lang == "en" %}Git{% else %}{{ trans(key="ui-git") }}{% endif
-                    %}</a>
+                <div class="nav-links">
+                    <a
+                        href="{% if lang == 'en' %}https://zenc-lang.org/{% else %}https://zenc-lang.org/{{ lang }}/{% endif %}">{{
+                        trans(key="ui-home", lang=lang) }}</a>
+                    <a href="{{ get_url(path=" /", lang=lang) }}" class="active">{{ trans(key="ui-docs", lang=lang)
+                        }}</a>
+                    <a href="https://git.zenc-lang.org">{{ trans(key="ui-git", lang=lang) }}</a>
+                </div>
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
                     <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2.5">
@@ -777,34 +1176,32 @@
                             <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
                             <path d="M2 12h20" />
                         </svg>
-                        {{ lang | upper }}
+                        {{ trans(key="ui-lang-name", lang=lang) }}
                     </button>
                     <div class="lang-menu">
-                        {% set c_path = current_path | default(value="") | trim_start_matches(pat="/") %}
-                        {% set parts = c_path | split(pat="/") %}
-                        {% if parts | length > 0 and parts[0] == lang %}
-                        {% set joined = parts | slice(start=1) | join(sep="/") %}
-                        {% set clean_path = "/" ~ joined %}
-                        {% else %}
-                        {% set clean_path = "/" ~ c_path %}
-                        {% endif %}
+                        {# We always show the current language #}
+                        <a href="{{ current_url | default(value=" /") }}" class="lang-option active">
+                            {{ trans(key="ui-lang-name", lang=lang) }}
+                        </a>
 
-                        <a href="{{ clean_path }}"
-                            class="lang-option {% if lang == 'en' %}active{% endif %}">English</a>
-                        <a href="/de{{ clean_path }}"
-                            class="lang-option {% if lang == 'de' %}active{% endif %}">Deutsch</a>
-                        <a href="/es{{ clean_path }}"
-                            class="lang-option {% if lang == 'es' %}active{% endif %}">Español</a>
-                        <a href="/it{{ clean_path }}"
-                            class="lang-option {% if lang == 'it' %}active{% endif %}">Italiano</a>
-                        <a href="/pt{{ clean_path }}"
-                            class="lang-option {% if lang == 'pt' %}active{% endif %}">Português</a>
-                        <a href="/ru{{ clean_path }}"
-                            class="lang-option {% if lang == 'ru' %}active{% endif %}">Русский</a>
-                        <a href="/zh-cn{{ clean_path }}"
-                            class="lang-option {% if lang == 'zh-cn' %}active{% endif %}">简体中文</a>
-                        <a href="/zh-tw{{ clean_path }}"
-                            class="lang-option {% if lang == 'zh-tw' %}active{% endif %}">繁體中文</a>
+                        {# Show available translations #}
+                        {% if page and page.translations %}
+                        {% for tr in page.translations %}
+                        {% if tr.lang != lang %}
+                        <a href="{{ tr.permalink }}" class="lang-option">
+                            {{ trans(key="ui-lang-name", lang=tr.lang) }}
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                        {% elif section and section.translations %}
+                        {% for tr in section.translations %}
+                        {% if tr.lang != lang %}
+                        <a href="{{ tr.permalink }}" class="lang-option">
+                            {{ trans(key="ui-lang-name", lang=tr.lang) }}
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </nav>
@@ -814,28 +1211,31 @@
     <div class="docs-layout">
         <aside class="sidebar">
 
+            {% if lang != "zh-cn" and lang != "zh-tw" %}
             <div class="search-container">
                 <input type="text" id="search" class="search-input" placeholder="{{ trans(key="search-placeholder",
                     lang=lang) }}" autocomplete="off">
                 <div class="search-results" id="search-results"></div>
             </div>
+            {% endif %}
 
             <div class="sidebar-group" id="group-tour">
                 <div class="sidebar-header" onclick="toggleSidebarGroup('group-tour')">
-                    <div class="sidebar-title">{{ trans(key="tour-title") }}</div>
+                    <div class="sidebar-title">{{ trans(key="tour-title", lang=lang) }}</div>
                     <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                 </div>
                 <div class="sidebar-links">
-                    {% if lang != "en" %}{% set tour_path = "tour/_index." ~ lang ~ ".md" %}{% else %}{% set tour_path =
-                    "tour/_index.md" %}{% endif %}
-                    {% set tour_section = get_section(path=tour_path) %}
-                    {% for page in tour_section.pages %}
-                    <a href="{{ page.permalink }}"
-                        class="sidebar-link {% if current_path and current_path == page.path %}active{% endif %}">
-                        {{ page.title }}
+                    {% if lang == "en" %}
+                    {% set tour_section = get_section(path="tour/_index.md") %}
+                    {% else %}
+                    {% set tour_section = get_section(path="tour/_index." ~ lang ~ ".md") %}
+                    {% endif %}
+                    {% for p in tour_section.pages %}
+                    <a href="{{ p.permalink }}" class="sidebar-link {% if current_path == p.path %}active{% endif %}">
+                        {{ p.title }}
                     </a>
                     {% endfor %}
                 </div>
@@ -843,19 +1243,21 @@
 
             <div class="sidebar-group" id="group-std">
                 <div class="sidebar-header" onclick="toggleSidebarGroup('group-std')">
-                    <div class="sidebar-title">{{ trans(key="std-title") }}</div>
+                    <div class="sidebar-title">{{ trans(key="std-title", lang=lang) }}</div>
                     <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                 </div>
                 <div class="sidebar-links">
-                    {% set std_path = "std/_index.md" %}
-                    {% set std_section = get_section(path=std_path) %}
-                    {% for page in std_section.pages | sort(attribute="title") %}
-                    <a href="{{ page.permalink }}"
-                        class="sidebar-link {% if current_path and current_path == page.path %}active{% endif %}">
-                        {{ page.title }}
+                    {% if lang == "en" %}
+                    {% set std_section = get_section(path="std/_index.md") %}
+                    {% else %}
+                    {% set std_section = get_section(path="std/_index." ~ lang ~ ".md") %}
+                    {% endif %}
+                    {% for p in std_section.pages %}
+                    <a href="{{ p.permalink }}" class="sidebar-link {% if current_path == p.path %}active{% endif %}">
+                        {{ p.title }}
                     </a>
                     {% endfor %}
                 </div>
@@ -863,34 +1265,22 @@
 
             <div class="sidebar-group" id="group-examples">
                 <div class="sidebar-header" onclick="toggleSidebarGroup('group-examples')">
-                    <div class="sidebar-title">{{ trans(key="examples-title") }}</div>
+                    <div class="sidebar-title">{{ trans(key="examples-title", lang=lang) }}</div>
                     <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                 </div>
                 <div class="sidebar-links">
-                    {% set ex_path = "examples/rosetta/_index.md" %}
-                    {% set rosetta_section = get_section(path=ex_path) %}
-                    {% for page in rosetta_section.pages | sort(attribute="title") %}
-                    <a href="{{ page.permalink }}"
-                        class="sidebar-link {% if current_path and current_path == page.path %}active{% endif %}">
-                        {{ page.title }}
+                    {% set examples_section = get_section(path="examples/rosetta/_index.md", lang=lang) %}
+                    {% for p in examples_section.pages | sort(attribute="title") %}
+                    <a href="{{ p.permalink }}" class="sidebar-link {% if current_path == p.path %}active{% endif %}">
+                        {{ p.title }}
                     </a>
                     {% endfor %}
                 </div>
             </div>
 
-            <div class="sidebar-newsletter">
-                <h4>{{ trans(key="newsletter-title") }}</h4>
-                <p>{{ trans(key="newsletter-desc") }}</p>
-                <form action="https://buttondown.com/api/emails/embed-subscribe/zenc" method="post" target="popupwindow"
-                    onsubmit="window.open('https://buttondown.com/zenc', 'popupwindow')" class="newsletter-form">
-                    <input type="email" name="email" id="bd-email-sidebar" placeholder="email@example.com" required>
-                    <input type="hidden" value="1" name="embed">
-                    <button type="submit" class="btn-subscribe">{{ trans(key="subscribe") }}</button>
-                </form>
-            </div>
         </aside>
 
         <main class="doc-content">
@@ -903,51 +1293,83 @@
     <footer class="container footer-docs">
         <div class="footer-info">
             <strong class="footer-logo">Zen C</strong>
-            <span>{{ trans(key="motto") }}</span>
-            <span>{{ trans(key="copyright") | safe }}</span>
+            <span>{{ trans(key="motto", lang=lang) }}</span>
+            <span>{{ trans(key="copyright", lang=lang) | safe }}</span>
         </div>
         <div class="footer-col">
-            <h4>{{ trans(key="project") }}</h4>
+            <h4>{{ trans(key="project", lang=lang) }}</h4>
             <div class="footer-links">
-                <a href="https://zenc-lang.org{% if lang != 'en' %}/{{ lang }}{% endif %}/">{% if lang == "en" %}Home{% else %}{{ trans(key="ui-home") }}{% endif
-                    %}</a>
-                <a href="{{ get_url(path="/", lang=lang) }}">{% if lang == "en" %}Docs{% else %}{{ trans(key="ui-docs")
+                <a
+                    href="{% if lang == 'en' %}https://zenc-lang.org/{% else %}https://zenc-lang.org/{{ lang }}/{% endif %}">{%
+                    if lang == "en" %}Home{%
+                    else %}{{ trans(key="ui-home", lang=lang) }}{% endif %}</a>
+                <a href="{{ get_url(path=" /", lang=lang) }}">{% if lang == "en" %}Docs{% else %}{{ trans(key="ui-docs",
+                    lang=lang)
                     }}{% endif %}</a>
-                <a href="https://git.zenc-lang.org">{% if lang == "en" %}Git{% else %}{{ trans(key="ui-git") }}{% endif
+                <a href="https://git.zenc-lang.org">{% if lang == "en" %}Git{% else %}{{ trans(key="ui-git", lang=lang)
+                    }}{% endif
                     %}</a>
             </div>
         </div>
         <div class="footer-col" style="grid-column: span 1;">
-            <h4>{{ trans(key="newsletter-title") }}</h4>
+            <h4>{{ trans(key="newsletter-title", lang=lang) }}</h4>
             <div class="footer-links">
-                <p style="margin-bottom: 1rem; line-height: 1.4; font-size: 0.8rem;">{{ trans(key="newsletter-desc") }}
+                <p style="margin-bottom: 1rem; line-height: 1.4; font-size: 0.8rem;">{{ trans(key="newsletter-desc",
+                    lang=lang) }}
                 </p>
                 <form action="https://buttondown.com/api/emails/embed-subscribe/zenc" method="post" target="popupwindow"
                     onsubmit="window.open('https://buttondown.com/zenc', 'popupwindow')" class="newsletter-form-footer">
                     <input type="email" name="email" id="bd-email-footer" placeholder="email@example.com" required>
                     <input type="hidden" value="1" name="embed">
-                    <button type="submit" class="btn-subscribe">{{ trans(key="subscribe") }}</button>
+                    <button type="submit" class="btn-subscribe">{{ trans(key="subscribe", lang=lang) }}</button>
                 </form>
                 <a href="https://buttondown.com/zenc" target="_blank"
                     style="font-size: 0.75rem; margin-top: 0.75rem; opacity: 0.7; display: block;">{{
-                    trans(key="archives") }}</a>
+                    trans(key="archives", lang=lang) }}</a>
             </div>
         </div>
     </footer>
 
+    {% if lang != "zh-cn" and lang != "zh-tw" %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js"></script>
-    <script src="{{ get_url(path='search_index.' ~ lang ~ '.js') }}"></script>
+    <script src="{{ get_url(path='search_index.' ~ lang ~ '.js', trailing_slash=false) }}"></script>
+    {% endif %}
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            // Find all pre blocks that don't have a copy button yet
+            document.querySelectorAll(".doc-content pre").forEach(function (pre) {
+                if (pre.querySelector(".copy-button")) return;
+
+                var button = document.createElement("button");
+                button.className = "copy-button";
+                button.title = "Copy code";
+                button.innerHTML = '<svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>';
+
+                button.addEventListener("click", function () {
+                    var code = pre.querySelector("code");
+                    var text = code ? code.innerText : pre.innerText;
+
+                    navigator.clipboard.writeText(text).then(function () {
+                        // Success feedback: visual shake or color change of the stone
+                        pre.classList.add("copy-success");
+                        setTimeout(function () {
+                            pre.classList.remove("copy-success");
+                        }, 1000);
+                    });
+                });
+
+                pre.appendChild(button);
+            });
+
+            // ... rest of search logic ...
             var searchInput = document.getElementById("search");
             var searchResults = document.getElementById("search-results");
-            var loadedIndex = null; // We will store the initialized search engine here
+            var loadedIndex = null;
 
-            if (!searchInput) return;
+            if (!searchInput || !searchResults) return;
 
             searchInput.addEventListener("keyup", function (e) {
                 var term = e.target.value.trim();
-
                 if (term === "") {
                     searchResults.style.display = "none";
                     searchResults.innerHTML = "";
@@ -955,11 +1377,20 @@
                 }
 
                 if (!loadedIndex && window.searchIndex) {
+                    // Register fallback functions for missing language-specific stemmers
+                    if (window.searchIndex.pipeline) {
+                        window.searchIndex.pipeline.forEach(function (p) {
+                            if (!elasticlunr.Pipeline.registeredFunctions[p]) {
+                                elasticlunr.Pipeline.registerFunction(function (token) {
+                                    return token;
+                                }, p);
+                            }
+                        });
+                    }
                     loadedIndex = elasticlunr.Index.load(window.searchIndex);
                 }
 
                 if (!loadedIndex) return;
-
                 var results = loadedIndex.search(term, {
                     bool: "OR",
                     expand: true
@@ -973,11 +1404,10 @@
 
                 searchResults.style.display = "block";
                 var html = "<ul>";
-
                 for (var i = 0; i < Math.min(results.length, 8); i++) {
                     var ref = results[i].ref;
                     var doc = loadedIndex.documentStore.getDoc(ref);
-                    html += `<li><a href="${doc.url}">${doc.title}</a></li>`;
+                    html += `<li><a href="${doc.id}">${doc.title}</a></li>`;
                 }
                 html += "</ul>";
                 searchResults.innerHTML = html;
@@ -1000,7 +1430,6 @@
             ['group-tour', 'group-std', 'group-examples'].forEach(id => {
                 const group = document.getElementById(id);
                 if (!group) return;
-
                 // Check if any link inside is active
                 const hasActive = group.querySelector('.active');
                 const storedState = localStorage.getItem('sidebar-' + id);
@@ -1016,30 +1445,31 @@
                     group.classList.add('collapsed');
                 }
             });
-        });
 
-        // --- Theme Toggle Logic ---
-        const themeToggle = document.getElementById('theme-toggle');
-        const htmlElement = document.documentElement;
+            // --- Theme Toggle Logic ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const htmlElement = document.documentElement;
 
-        if (themeToggle) {
-            themeToggle.addEventListener('click', () => {
-                const currentTheme = htmlElement.getAttribute('data-theme');
-                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    const currentTheme = document.documentElement.getAttribute('data-theme') ||
+                        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
-                let newTheme;
-                if (currentTheme === 'dark') {
-                    newTheme = 'light';
-                } else if (currentTheme === 'light') {
-                    newTheme = 'dark';
-                } else {
-                    newTheme = systemDark ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    try {
+                        localStorage.setItem('theme', newTheme);
+                    } catch (e) { }
+                });
+            }
+
+            // Sync theme across tabs
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'theme' && e.newValue) {
+                    document.documentElement.setAttribute('data-theme', e.newValue);
                 }
-
-                htmlElement.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
             });
-        }
+        });
     </script>
 </body>
 

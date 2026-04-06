@@ -1,5 +1,6 @@
 # THE ZEN C DOCUMENTATION CONFIG
 base_url = "https://docs.zenc-lang.org"
+build_search_index = true
 default_language = "en"
 title = "Zen C Documentation"
 description = "Official Grimoire for the Zen C Systems Language."
@@ -18,28 +19,33 @@ external_links_target_blank = true
 highlight_code = true
 highlight_theme = "css"
 render_with_code_block_copy_button = true
+extra_syntaxes_and_themes = ["syntaxes"]
 
 [search]
-build_search_index = true
 index_format = "elasticlunr_javascript"
 
 [languages.de]
+build_search_index = true
 title = "Zen C Dokumentation"
 description = "Offizielles Grimoire für die Zen C Systemsprache."
 
 [languages.es]
+build_search_index = true
 title = "Documentación de Zen C"
 description = "Grimorio oficial del lenguaje de sistemas Zen C."
 
 [languages.it]
+build_search_index = true
 title = "Documentazione Zen C"
 description = "Grimorio ufficiale per il linguaggio di sistema Zen C."
 
 [languages.pt]
+build_search_index = true
 title = "Documentação Zen C"
 description = "Grimório oficial para a linguagem de sistemas Zen C."
 
 [languages.ru]
+build_search_index = true
 title = "Документация Zen C"
 description = "Официальный гримуар системного языка Zen C."
 
@@ -66,6 +72,7 @@ ui-git = "Git"
 copyright = "&copy; 2026 zenc-lang Org."
 motto = "Modern ergonomics. Pure C."
 project = "Project"
+ui-lang-name = "English"
 archives = "View Archives →"
 # Landing Page
 docs-tagline = "Exploring the syntax and internals of Zen C."
@@ -97,6 +104,7 @@ ui-git = "Git"
 copyright = "&copy; 2026 zenc-lang Org."
 motto = "Moderne Ergonomie. Pures C."
 project = "Projekt"
+ui-lang-name = "Deutsch"
 archives = "Archive ansehen →"
 # Landing Page
 docs-tagline = "Erkunden Sie die Syntax und Interna von Zen C."
@@ -128,6 +136,7 @@ ui-git = "Git"
 copyright = "&copy; 2026 zenc-lang Org."
 motto = "Ergonomía moderna. C puro."
 project = "Proyecto"
+ui-lang-name = "Español"
 archives = "Ver archivos →"
 # Landing Page
 docs-tagline = "Explorando la sintaxis y los entresijos de Zen C."
@@ -159,6 +168,7 @@ ui-git = "Git"
 copyright = "&copy; 2026 zenc-lang Org."
 motto = "Ergonomia moderna. C puro."
 project = "Progetto"
+ui-lang-name = "Italiano"
 archives = "Visualizza archivi →"
 # Landing Page
 docs-tagline = "Esplorando la sintassi e gli interni di Zen C."
@@ -190,6 +200,7 @@ ui-git = "Git"
 copyright = "&copy; 2026 zenc-lang Org."
 motto = "Ergonomia moderna. C puro."
 project = "Projeto"
+ui-lang-name = "Português"
 archives = "Ver arquivos →"
 # Landing Page
 docs-tagline = "Explorando a sintaxe e os internos do Zen C."
@@ -221,6 +232,7 @@ ui-git = "Git"
 copyright = "&copy; 2026 zenc-lang Org."
 motto = "Современная эргономика. Чистый Си."
 project = "Проект"
+ui-lang-name = "Русский"
 archives = "Посмотреть архивы →"
 # Landing Page
 docs-tagline = "Изучение синтаксиса и внутренних механизмов Zen C."
@@ -252,6 +264,7 @@ ui-git = "Git"
 copyright = "&copy; 2026 zenc-lang Org."
 motto = "现代人体工程学。纯粹的 C。"
 project = "项目"
+ui-lang-name = "简体中文"
 archives = "查看存档 →"
 # Landing Page
 docs-tagline = "探索 Zen C 的语法和内部机制。"
@@ -283,6 +296,7 @@ ui-git = "Git"
 copyright = "&copy; 2026 zenc-lang Org."
 motto = "現代人体工程學。純粹的 C。"
 project = "項目"
+ui-lang-name = "繁體中文"
 archives = "查看存檔 →"
 # Landing Page
 docs-tagline = "探索 Zen C 的語法和內部機制。"
