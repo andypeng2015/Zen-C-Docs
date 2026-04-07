@@ -263,6 +263,12 @@ fn add_five(x: int) -> int {
 
 > **Note:** When using Intel syntax (via `-masm=intel`), you must ensure your build is configured correctly (for example, `//> cflags: -masm=intel`). TCC does not support Intel syntax assembly.
 
+### Diagnostic System
+
+Zen C provides a categorized diagnostic system that can be controlled via `-W` and `-Wno-` flags. This is useful for managing warnings related to safety, unused code, and C interop.
+
+[Read more about the Diagnostic System](15-diagnostics.md)
+
 ### Build Directives
 
 Zen C supports special comments at the top of your source file to configure the build process without needing a complex build system or Makefile.

@@ -46,7 +46,13 @@ fn main() {
 #### `import` vs `include`
 
 - **`import "file.h"`**: Registra o header como um módulo nomeado. Habilita acesso implícito aos símbolos (por exemplo, `file::function()`).
-- **`include <file.h>`**: Emite puramente `#include <file.h>` no código C gerado. Não introduz nenhum símbolo ao compilador Zen C; você deve usar `extern fn` para acessá-los.
+- **`include <file.h>`**: Emite puramente `#include <file.h>` no código C gerado. Não introduz nenhum símbolo no compilador Zen C; você deve usar `extern fn` para acessá-los.
+
+#### Diagnóstico e Atrito
+
+Por padrão, o Zen C suprime os avisos de "Função não definida" para as funções da biblioteca padrão C para fornecer uma experiência de interoperabilidade sem atrito. Você pode controlar esse comportamento usando os sinalizadores `-Winterop` e `-Wno-interop`.
+
+[Leia mais sobre o Sistema de Diagnóstico](15-diagnostics.pt.md)
 
 ---
 

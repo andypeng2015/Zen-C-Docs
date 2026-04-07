@@ -110,6 +110,12 @@ fn fallback_init() { println "Nenhum backend selecionado"; }
 
 Múltiplos `@cfg` em uma declaração são combinados com AND. `not()` pode ser usado dentro de `any()` e `all()`. Funciona com qualquer declaração de nível superior: `fn`, `struct`, `import`, `impl`, `raw`, `def`, `test`, etc.
 
+### Sistema de Diagnóstico
+
+O Zen C fornece um sistema de diagnóstico categorizado que pode ser controlado através dos sinalizadores `-W` e `-Wno-`. Isso é útil para gerenciar avisos relacionados à segurança, código não utilizado e interoperabilidade com C.
+
+[Leia mais sobre o Sistema de Diagnóstico](15-diagnostics.pt.md)
+
 ### Atributos
 Decore funções e structs para modificar o comportamento do compilador.
 

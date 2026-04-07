@@ -48,6 +48,12 @@ fn main() {
 - **`import "file.h"`**: Registers the header as a named module. Enables implicit access to symbols (for example, `file::function()`).
 - **`include <file.h>`**: Purely emits `#include <file.h>` in the generated C code. Does not introduce any symbols to the Zen C compiler; you must use `extern fn` to access them.
 
+#### Diagnostics & Friction
+
+By default, Zen C suppresses "Undefined function" warnings for standard C library functions to provide a frictionless interop experience. You can control this behavior using the `-Winterop` and `-Wno-interop` flags.
+
+[Read more about the Diagnostic System](15-diagnostics.md)
+
 ---
 
 ## Standard Library

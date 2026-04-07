@@ -155,7 +155,13 @@ fn fallback_init() { println "Nessun backend selezionato"; }
 | `@cfg(any(A, B, ...))` | Includi se QUALSIASI condizione è vera (OR) |
 | `@cfg(all(A, B, ...))` | Includi se TUTTE le condizioni sono vere (AND) |
 
-Più `@cfg` su una dichiarazione vengono combinati con AND. `not()` può essere usato dentro `any()` e `all()`. Funziona con qualsiasi dichiarazione di livello superiore: `fn`, `struct`, `import`, `impl`, `raw`, `def`, `test`, ecc.
+Le `@cfg` multiple su una riga sono combinate con AND. `not()` può essere usato all'interno di `any()` e `all()`. Funziona su qualsiasi dichiarazione di alto livello: `fn`, `struct`, `import`, `impl`, `raw`, `def`, `test`, ecc.
+
+### Sistema di Diagnostica
+
+Zen C fornisce un sistema di diagnostica categorizzato che può essere controllato tramite i flag `-W` e `-Wno-`. Questo è utile per la gestione degli avvisi relativi alla sicurezza, al codice non utilizzato e all'interoperabilità con C.
+
+[Leggi di più sul Sistema di Diagnostica](15-diagnostics.it.md)
 
 ### Attributi
 

@@ -46,7 +46,13 @@ fn main() {
 #### `import` vs `include`
 
 - **`import "file.h"`**: Registriert Header als Modul; erlaubt impliziten Zugriff auf Symbole (`file::function()`).  
-- **`include <file.h>`**: Fügt nur `#include` in generiertes C ein; Symbole müssen mit `extern fn` manuell deklariert werden.
+- **`include <file.h>`**: Gibt lediglich `#include <file.h>` im generierten C-Code aus. Führt keine Symbole in den Zen C-Compiler ein; Sie müssen `extern fn` verwenden, um darauf zuzugreifen.
+
+#### Diagnose & Reibung
+
+Standardmäßig unterdrückt Zen C "Undefinierte Funktion"-Warnungen für Standard-C-Bibliotheksfunktionen, um eine reibungslose Interoperabilität zu gewährleisten. Sie können dieses Verhalten über die Flags `-Winterop` und `-Wno-interop` steuern.
+
+[Erfahren Sie mehr über das Diagnosesystem](15-diagnostics.de.md)
 
 ---
 

@@ -50,7 +50,13 @@ Zen C 確保類型匹配。
 #### `import` vs `include`
 
 - **`import "file.h"`**: 將頭文件註冊為命名模塊。啟用對符號的隱式訪問 (例如 `file::function()`)。
-- **`include <file.h>`**: 純粹在生成的 C 代碼中發出 `#include <file.h>`。不向 Zen C 編譯器引入任何符號；必須使用 `extern fn` 才能訪問它們。
+- **`include <file.h>`**: 純粹在生成的 C 代碼中發出 `#include <file.h>`。不會向 Zen C 編譯器引入任何符號；您必須使用 `extern fn` 來訪問它們。
+
+#### 診斷與摩擦
+
+默認情況下，Zen C 會抑制標準 C 庫函數的“未定義函數”警告，以提供無摩擦的互操作體驗。您可以使用 `-Winterop` 和 `-Wno-interop` 標誌來控制此行為。
+
+[閱讀更多關於診斷系統的信息](15-diagnostics.zh-tw.md)
 
 ---
 
