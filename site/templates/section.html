@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if section.description %}
+<p>{{ section.description }}</p>
+{% endif %}
+
+{{ section.content | safe }}
+
+<style>
+    .page-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0 4rem;
+    }
+
+    .page-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        padding: 1.5rem;
+        border-radius: 12px;
+        text-decoration: none;
+        color: var(--fg);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        position: relative;
+        overflow: hidden;
+        background-image:
+            repeating-linear-gradient(45deg,
+                transparent,
+                transparent 10px,
+                rgba(128, 128, 128, 0.02) 10px,
+                rgba(128, 128, 128, 0.02) 11px);
+    }
+
+    .page-card:hover {
+        border-color: var(--fn);
+        background-color: var(--surface-alt);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .page-card::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--fn);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.3s ease;
+    }
+
+    .page-card:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+
+    .page-title {
+        color: var(--primary);
+        font-weight: 700;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .page-description {
+        font-size: 0.85rem;
+        color: var(--muted);
+        line-height: 1.5;
+    }
+
+    .letter-heading {
+        margin-top: 3.5rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border);
+        color: var(--muted);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 1.25rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+</style>
+
+{% if section.subsections %}
+<div class="page-grid">
+    {% for subsection_path in section.subsections %}
+    {% set sub = get_section(path=subsection_path) %}
+    <a href="{{ sub.permalink }}" class="page-card">
+        <span class="page-title">📁 {{ sub.title }}</span>
+        {% if sub.description %}
+        <span class="page-description">{{ sub.description }}</span>
+        {% endif %}
+    </a>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if section.extra.no_alphabet_grouping %}
+<div class="page-grid">
+    {% for page in section.pages %}
+    <a href="{{ page.permalink }}" class="page-card">
+        <span class="page-title">{{ page.title }}</span>
+        {% if page.description %}
+        <span class="page-description">{{ page.description }}</span>
+        {% endif %}
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alphabet-directory">
+    {% set current_letter = "" %}
+
+    {% for page in section.pages | sort(attribute="title") %}
+    {% set first_letter = page.title | truncate(length=1, end="") | upper %}
+
+    {% if first_letter != current_letter %}
+    {% if current_letter != "" %}
+</div> {% endif %}
+
+<h2 class="letter-heading">{{ first_letter }}</h2>
+<div class="page-grid"> {% set_global current_letter = first_letter %}
+    {% endif %}
+
+    <a href="{{ page.permalink }}" class="page-card">
+        <span class="page-title">{{ page.title }}</span>
+        {% if page.description %}
+        <span class="page-description">{{ page.description }}</span>
+        {% endif %}
+    </a>
+
+    {% if loop.last %}
+</div>
+{% endif %}
+{% endfor %}
+</div>
+{% endif %}
+
+{% endblock content %}
