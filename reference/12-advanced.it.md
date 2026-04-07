@@ -6,7 +6,9 @@ weight = 12
 # 12. Avanzate e Metaprogrammazione
 
 
-### 12.1 Metaprogramming
+### Avanzate e Metaprogrammazione
+
+#### 12.1 Metaprogrammazione
 
 #### Comptime
 Esegui codice al momento della compilazione per generare sorgente o stampare messaggi.
@@ -155,15 +157,9 @@ fn fallback_init() { println "Nessun backend selezionato"; }
 | `@cfg(any(A, B, ...))` | Includi se QUALSIASI condizione è vera (OR) |
 | `@cfg(all(A, B, ...))` | Includi se TUTTE le condizioni sono vere (AND) |
 
-Le `@cfg` multiple su una riga sono combinate con AND. `not()` può essere usato all'interno di `any()` e `all()`. Funziona su qualsiasi dichiarazione di alto livello: `fn`, `struct`, `import`, `impl`, `raw`, `def`, `test`, ecc.
+Più `@cfg` su una dichiarazione vengono combinati con AND. `not()` può essere usato dentro `any()` e `all()`. Funziona con qualsiasi dichiarazione di livello superiore: `fn`, `struct`, `import`, `impl`, `raw`, `def`, `test`, ecc.
 
-### Sistema di Diagnostica
-
-Zen C fornisce un sistema di diagnostica categorizzato che può essere controllato tramite i flag `-W` e `-Wno-`. Questo è utile per la gestione degli avvisi relativi alla sicurezza, al codice non utilizzato e all'interoperabilità con C.
-
-[Leggi di più sul Sistema di Diagnostica](15-diagnostics.it.md)
-
-### Attributi
+#### 12.2 Attributi
 
 Decora le funzioni e gli struct per modificare il comportamento del compilatore.
 
@@ -213,7 +209,7 @@ Zen C fornisce delle "derivazioni intelligenti" che rispettano le Semantiche di 
     - Quando si confrontano due struct non-Copy (`a == b`), il compilatore passa automaticamente `b` per referenza (`&b`) per non doverlo spostare.
     - I controlli di uguaglianza ricorsivi preferiscono l'accesso da puntatore per prevenire il trasferimento del proprietario.
 
-### 12.3 Assembly Inline
+#### 12.3 Assembly Inline
 
 Zen C fornisce supporto di prima-classe per l'assembly _inline_, traspilando direttamente ad `asm` con estensioni in stile GCC.
 
@@ -267,13 +263,13 @@ fn aggiungi_cinque(x: int) -> int {
 Quando si usa la sintassi Intel (via `-masm=intel`), dovrai assicurarti che la tua build sia configurata correttamente (per esempio, `//> cflags: -masm=intel`). TCC non supporta la sintassi assembly Intel.
 {% end %}
 
-### 12.4 Sistema di Diagnostica
+#### 12.4 Sistema di Diagnostica
 
-Zen C fornisce un sistema diagnostico categorizzato che può essere controllato tramite i flag `-W` e `-Wno-`. Questo è utile per gestire gli avvisi relativi alla sicurezza, al codice inutilizzato e all'interoperabilità C.
+Zen C fornisce un sistema di diagnostica categorizzato che può essere controllato tramite i flag `-W` e `-Wno-`. Questo è utile per gestire gli avvisi relativi alla sicurezza, al codice non utilizzato e all'interoperabilità C.
 
-[Leggi di più sul Sistema di Diagnostica](15-diagnostics.it.md)
+[Maggiori informazioni sul Sistema di Diagnostica](#15-sistema-di-diagnostica)
 
-### 12.5 Direttive della Build
+#### 12.5 Direttive della Build
 
 Zen C supporta dei commenti speciali all'inizio del tuo file sorgente che ti permettono di configurare il processo di build senza necessitare di un sistema di build complesso o di un *Makefile*.
 
@@ -323,7 +319,7 @@ import "raylib.h"
 fn main() { ... }
 ```
 
-### 12.6 Keyword
+#### 12.6 Parole Chiave
 
 Le keyword che seguono sono riservate in Zen C.
 

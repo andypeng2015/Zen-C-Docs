@@ -45,13 +45,7 @@ fn main() {
 #### `import` vs `include`
 
 - **`import "file.h"`**: Registra la cabecera como un módulo con nombre. Habilita el acceso implícito a símbolos (ej. `file::function()`).
-- **`include <file.h>`**: Simplemente emite `#include <file.h>` en el código C generado. No introduce ningún símbolo al compilador de Zen C; debe usar `extern fn` para acceder a ellos.
-
-#### Diagnóstico y Fricción
-
-Por defecto, Zen C suprime las advertencias de "Función no definida" para las funciones de la biblioteca estándar de C para proporcionar una experiencia de interoperabilidad sin fricciones. Puede controlar este comportamiento utilizando los indicadores `-Winterop` y `-Wno-interop`.
-
-[Leer más sobre el Sistema de Diagnóstico](15-diagnostics.es.md)
+- **`include <file.h>`**: Puramente emite `#include <file.h>` en el código C generado. No introduce ningún símbolo al compilador de Zen C; debes usar `extern fn` para acceder a ellos.
 
 ---
 

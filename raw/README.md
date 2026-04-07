@@ -119,13 +119,19 @@ Check out these projects built with Zen C:
         <li><a href="#9-object-oriented-programming">9. Object Oriented Programming</a></li>
         <li><a href="#10-generics">10. Generics</a></li>
         <li><a href="#11-concurrency-asyncawait">11. Concurrency</a></li>
-        <li><a href="#12-metaprogramming">12. Metaprogramming</a></li>
-        <li><a href="#13-attributes">13. Attributes</a></li>
-        <li><a href="#14-inline-assembly">14. Inline Assembly</a></li>
-        <li><a href="#15-build-directives">15. Build Directives</a></li>
-        <li><a href="#16-keywords">16. Keywords</a></li>
-        <li><a href="#17-c-interoperability">17. C Interoperability</a></li>
-        <li><a href="#18-unit-testing-framework">18. Unit Testing Framework</a></li>
+        <li><a href="#12-advanced--metaprogramming">12. Advanced & Metaprogramming</a>
+          <ul>
+            <li><a href="#121-metaprogramming">12.1 Metaprogramming</a></li>
+            <li><a href="#122-attributes">12.2 Attributes</a></li>
+            <li><a href="#123-inline-assembly">12.3 Inline Assembly</a></li>
+            <li><a href="#124-diagnostic-system">12.4 Diagnostic System</a></li>
+            <li><a href="#125-build-directives">12.5 Build Directives</a></li>
+            <li><a href="#126-keywords">12.6 Keywords</a></li>
+          </ul>
+        </li>
+        <li><a href="#13-c-interoperability">13. C Interoperability</a></li>
+        <li><a href="#14-unit-testing-framework">14. Unit Testing Framework</a></li>
+        <li><a href="#15-diagnostic-system">15. Diagnostic System</a></li>
       </ul>
     </td>
   </tr>
@@ -1106,7 +1112,9 @@ fn main() {
 }
 ```
 
-### 12. Metaprogramming
+### 12. Advanced & Metaprogramming
+
+#### 12.1 Metaprogramming
 
 #### Comptime
 Run code at compile-time to generate source or print messages.
@@ -1260,7 +1268,7 @@ fn fallback_init() { println "No backend selected"; }
 
 Multiple `@cfg` on one declaration are ANDed. `not()` can be used inside `any()` and `all()`. Works on any top-level declaration: `fn`, `struct`, `import`, `impl`, `raw`, `def`, `test`, etc.
 
-### 13. Attributes
+#### 12.2 Attributes
 
 Decorate functions and structs to modify compiler behavior.
 
@@ -1311,7 +1319,7 @@ Zen C provides "Smart Derives" that respect Move Semantics:
     - When comparing two non-Copy structs (`a == b`), the compiler automatically passes `b` by reference (`&b`) to avoid moving it.
     - Recursive equality checks on fields also prefer pointer access to prevent ownership transfer.
 
-### 14. Inline Assembly
+#### 12.3 Inline Assembly
 
 Zen C provides first-class support for inline assembly, transpiling directly to GCC-style extended `asm`.
 
@@ -1359,9 +1367,13 @@ fn add_five(x: int) -> int {
 | **Clobber** | `: clobber("rax")` | `"rax"` |
 | **Memory** | `: clobber("memory")` | `"memory"` |
 
-> **Note:** When using Intel syntax (via `-masm=intel`), you must ensure your build is configured correctly (for example, `//> cflags: -masm=intel`). TCC does not support Intel syntax assembly.
+#### 12.4 Diagnostic System
 
-### 15. Build Directives
+Zen C provides a categorized diagnostic system that can be controlled via `-W` and `-Wno-` flags. This is useful for managing warnings related to safety, unused code, and C interop.
+
+[Read more about the Diagnostic System](#15-diagnostics)
+
+#### 12.5 Build Directives
 
 Zen C supports special comments at the top of your source file to configure the build process without needing a complex build system or Makefile.
 
@@ -1411,7 +1423,7 @@ import "raylib.h"
 fn main() { ... }
 ```
 
-### 16. Keywords
+#### 12.6 Keywords
 
 The following keywords are reserved in Zen C.
 
@@ -1434,7 +1446,7 @@ The following identifiers are reserved because they are keywords in C11:
 #### Operators
 `and`, `or`
 
-### 17. C Interoperability
+### 13. C Interoperability
 
 Zen C offers two ways to interact with C code: **Trusted Imports** (Convenient) and **Explicit FFI** (Safe/Precise).
 
@@ -1519,7 +1531,7 @@ Zen C includes a standard library (`std`) covering essential functionality.
 
 </details>
 
-### 18. Unit Testing Framework
+### 14. Unit Testing Framework
 
 Zen C features a built-in testing framework that allows you to write unit tests directly in your source files using the `test` keyword.
 
@@ -1654,6 +1666,71 @@ Add these configurations to your `.vscode` directory to enable one-click debuggi
     "preLaunchTask": "Zen C: Build Debug"
 }
 ```
+
+### 15. Diagnostic System
+
+Zen C provides a categorized diagnostic system that allows for granular control over compiler warnings. This helps maintain high code quality standards while reducing friction when interacting with external C code.
+
+#### Diagnostic Categories
+
+Warnings are grouped into logical categories. Each category can be enabled or disabled globally using compiler flags.
+
+| Category | Description | Default |
+| :--- | :--- | :--- |
+| **`INTEROP`** | Warnings related to C header imports and undefined extern functions. | **OFF** |
+| **`PEDANTIC`** | Extra strict checks for potential issues or code quality. | **OFF** |
+| **`UNUSED`** | Warnings for defined but unused variables, parameters, or functions. | **ON** |
+| **`SAFETY`** | Critical safety warnings like null pointer access or division by zero. | **ON** |
+| **`LOGIC`** | Logic-related warnings like unreachable code or constant comparisons. | **ON** |
+| **`CONVERSION`** | Warnings for implicit or narrowing type conversions. | **ON** |
+| **`STYLE`** | Coding style warnings like variable shadowing. | **ON** |
+
+#### Compiler Flags
+
+You can control diagnostics using the `-W` (enable) and `-Wno-` (disable) flags followed by a category name or specific diagnostic ID.
+
+##### Category Flags
+
+- `-Winterop`: Enables all interoperability-related warnings.
+- `-Wno-unused`: Specifically silences unused variable/parameter warnings.
+- `-Wsafety`: Ensures all safety checks are active.
+- `-Wall`: Enables all major diagnostic categories.
+- `-Wextra`: Enables even stricter diagnostics (equivalent to `-Wpedantic`).
+
+##### Usage Example
+
+```bash
+# Compile with C interop warnings enabled
+zc app.zc -Winterop
+
+# Compile with all warnings enabled except for unused code
+zc app.zc -Wall -Wno-unused
+```
+
+#### C Interop Friction
+
+By default, Zen C suppresses "Undefined function" warnings for functions that likely belong to C standard libraries (`INTEROP` category is **OFF**).
+
+If you want the compiler to strictly flag every undefined function (e.g., to catch typos), enable the interop category:
+
+```bash
+zc main.zc -Winterop
+```
+
+When enabled, the compiler will provide helpful suggestions for common C functions:
+```text
+warning: Undefined function 'abs'
+  --> main.zc:5:13
+   |
+5  |     let x = abs(-5);
+   |             ^ here
+   |
+   = note: If this is a C function, it might need to be whitelisted in 'zenc.json'
+```
+
+#### Whitelisting
+
+If you frequently use a specific C library and want to keep `-Winterop` enabled without being nagged by specific functions, you can add them to the `c_function_whitelist` in the `zenc.json` config file.
 
 ## Compiler Support & Compatibility
 

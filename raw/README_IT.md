@@ -119,13 +119,19 @@ Dai un'occhiata a questi progetti creati con Zen C:
         <li><a href="#9-programmazione-orientata-a-oggetti">9. Programmazione Orientata a Oggetti</a></li>
         <li><a href="#10-generici">10. Generici</a></li>
         <li><a href="#11-concorrenza-asincrona-asyncawait">11. Concorrenza</a></li>
-        <li><a href="#12-metaprogramming">12. Metaprogramming</a></li>
-        <li><a href="#13-attributi">13. Attributi</a></li>
-        <li><a href="#14-assembly-inline">14. Assembly Inline</a></li>
-        <li><a href="#15-direttive-della-build">15. Direttive della Build</a></li>
-        <li><a href="#16-parole-chiave">16. Parole Chiave</a></li>
-        <li><a href="#17-interoperabilità-c">17. Interoperabilità C</a></li>
-        <li><a href="#18-framework-di-test-unitari">18. Framework di Test Unitari</a></li>
+        <li><a href="#12-avanzate-e-metaprogrammazione">12. Avanzate e Metaprogrammazione</a>
+          <ul>
+            <li><a href="#121-metaprogrammazione">12.1 Metaprogrammazione</a></li>
+            <li><a href="#122-attributi">12.2 Attributi</a></li>
+            <li><a href="#123-assembly-inline">12.3 Assembly Inline</a></li>
+            <li><a href="#124-sistema-di-diagnostica">12.4 Sistema di Diagnostica</a></li>
+            <li><a href="#125-direttive-della-build">12.5 Direttive della Build</a></li>
+            <li><a href="#126-parole-chiave">12.6 Parole Chiave</a></li>
+          </ul>
+        </li>
+        <li><a href="#13-interoperabilità-c">13. Interoperabilità C</a></li>
+        <li><a href="#14-framework-di-test-unitari">14. Framework di Test Unitari</a></li>
+        <li><a href="#15-sistema-di-diagnostica">15. Sistema di Diagnostica</a></li>
       </ul>
     </td>
   </tr>
@@ -1099,7 +1105,9 @@ fn main() {
 }
 ```
 
-### 12. Metaprogramming
+### 12. Avanzate e Metaprogrammazione
+
+#### 12.1 Metaprogrammazione
 
 #### Comptime
 Esegui codice al momento della compilazione per generare sorgente o stampare messaggi.
@@ -1248,7 +1256,7 @@ fn fallback_init() { println "Nessun backend selezionato"; }
 
 Più `@cfg` su una dichiarazione vengono combinati con AND. `not()` può essere usato dentro `any()` e `all()`. Funziona con qualsiasi dichiarazione di livello superiore: `fn`, `struct`, `import`, `impl`, `raw`, `def`, `test`, ecc.
 
-### 13. Attributi
+#### 12.2 Attributi
 
 Decora le funzioni e gli struct per modificare il comportamento del compilatore.
 
@@ -1298,7 +1306,7 @@ Zen C fornisce delle "derivazioni intelligenti" che rispettano le Semantiche di 
     - Quando si confrontano due struct non-Copy (`a == b`), il compilatore passa automaticamente `b` per referenza (`&b`) per non doverlo spostare.
     - I controlli di uguaglianza ricorsivi preferiscono l'accesso da puntatore per prevenire il trasferimento del proprietario.
 
-### 14. Assembly Inline
+#### 12.3 Assembly Inline
 
 Zen C fornisce supporto di prima-classe per l'assembly _inline_, traspilando direttamente ad `asm` con estensioni in stile GCC.
 
@@ -1351,7 +1359,13 @@ fn aggiungi_cinque(x: int) -> int {
 > [!NOTE]
 > Quando si usa la sintassi Intel (via `-masm=intel`), dovrai assicurarti che la tua build sia configurata correttamente (per esempio, `//> cflags: -masm=intel`). TCC non supporta la sintassi assembly Intel.
 
-### 15. Direttive della Build
+#### 12.4 Sistema di Diagnostica
+
+Zen C fornisce un sistema di diagnostica categorizzato che può essere controllato tramite i flag `-W` e `-Wno-`. Questo è utile per gestire gli avvisi relativi alla sicurezza, al codice non utilizzato e all'interoperabilità C.
+
+[Maggiori informazioni sul Sistema di Diagnostica](#15-sistema-di-diagnostica)
+
+#### 12.5 Direttive della Build
 
 Zen C supporta dei commenti speciali all'inizio del tuo file sorgente che ti permettono di configurare il processo di build senza necessitare di un sistema di build complesso o di un *Makefile*.
 
@@ -1401,7 +1415,7 @@ import "raylib.h"
 fn main() { ... }
 ```
 
-### 16. Keyword
+#### 12.6 Parole Chiave
 
 Le keyword che seguono sono riservate in Zen C.
 
@@ -1424,7 +1438,8 @@ Gli identifiers seguenti sono riservati poiché sono keyword nello standard C11:
 #### Operatori
 `and`, `or`
 
-### 17. Interoperabilità C
+### 13. Interoperabilità C
+
 Zen C offre due modi per interagire con il codice C: **Import Trusted** (Conveniente) e **FFI Esplicita** (Sicuro/Preciso).
 
 #### Metodo 1: Import Trusted (Conveniente)
@@ -1464,7 +1479,7 @@ fn main() {
 - **`import "file.h"`**: Registra l'header come un modulo con nome. Abilita l'accesso implicito ai simboli (es. `file::function()`).
 - **`include <file.h>`**: Emette puramente `#include <file.h>` nel codice C generato. Non introduce alcun simbolo nel compilatore Zen C; devi usare `extern fn` per accedervi.
 
-### 18. Framework di Test Unitari
+### 14. Framework di Test Unitari
 
 Zen C include un framework di test integrato che consente di scrivere test unitari direttamente nei file sorgente utilizzando la parola chiave `test`.
 
@@ -1491,6 +1506,71 @@ zc run mio_file.zc
 
 #### Asserzioni
 Usa la funzione integrata `assert(condizione, messaggio)` per verificare le aspettative. Se la condizione è falsa, il test fallirà e stamperà il messaggio fornito.
+
+### 15. Sistema di Diagnostica
+
+Zen C presenta un sistema di diagnostica categorizzato che fornisce un controllo granulare sugli avvisi (warning) del compilatore. Ciò consente di mantenere elevati standard di qualità del codice riducendo al contempo l'attrito durante l'interazione con il codice C esterno.
+
+#### Categorie di Diagnostica
+
+Gli avvisi sono raggruppati in categorie logiche. Ogni categoria può essere abilitata o disabilitata globalmente utilizzando i flag del compilatore.
+
+| Categoria | Descrizione | Default |
+| :--- | :--- | :--- |
+| **`INTEROP`** | Avvisi relativi all'importazione di header C e funzioni esterne non definite. | **OFF** |
+| **`PEDANTIC`** | Controlli extra rigorosi per potenziali problemi o qualità del codice. | **OFF** |
+| **`UNUSED`** | Avvisi per variabili, parametri o funzioni definiti ma non utilizzati. | **ON** |
+| **`SAFETY`** | Avvisi critici sulla sicurezza come l'accesso a puntatori nulli o la divisione per zero. | **ON** |
+| **`LOGIC`** | Avvisi relativi alla logica come codice irraggiungibile o confronti tra costanti. | **ON** |
+| **`CONVERSION`** | Avvisi per conversioni di tipo implicite o restrittive. | **ON** |
+| **`STYLE`** | Avvisi sullo stile di codifica come l'oscuramento delle variabili (shadowing). | **ON** |
+
+#### Flag del Compilatore
+
+È possibile controllare la diagnostica utilizzando i flag `-W` (abilita) e `-Wno-` (disabilita) seguiti dal nome di una categoria o da un ID diagnostico specifico.
+
+##### Flag di Categoria
+
+- `-Winterop`: Abilita tutti gli avvisi relativi all'interoperabilità.
+- `-Wno-unused`: Silenzia specificamente gli avvisi per variabili/parametri non utilizzati.
+- `-Wsafety`: Assicura che tutti i controlli di sicurezza siano attivi.
+- `-Wall`: Abilita tutte le principali categorie diagnostiche.
+- `-Wextra`: Abilita diagnostiche ancora più rigorose (equivalente a `-Wpedantic`).
+
+##### Esempio di Utilizzo
+
+```bash
+# Compila con gli avvisi di interoperabilità C abilitati
+zc app.zc -Winterop
+
+# Compila con tutti gli avvisi abilitati tranne quelli per il codice non utilizzato
+zc app.zc -Wall -Wno-unused
+```
+
+#### Attrito nell'Interoperabilità C
+
+Per impostazione predefinita, Zen C sopprime gli avvisi di "Funzione non definita" per le funzioni che probabilmente si trovano nelle librerie standard C (la categoria `INTEROP` è **OFF**).
+
+Se si desidera che il compilatore segnali rigorosamente ogni funzione non definita (ad esempio, per individuare refusi), abilitare la categoria interop:
+
+```bash
+zc main.zc -Winterop
+```
+
+Quando abilitata, il compilatore fornirà suggerimenti utili per le comuni funzioni C:
+```text
+warning: Undefined function 'abs'
+  --> main.zc:5:13
+   |
+5  |     let x = abs(-5);
+   |             ^ here
+   |
+   = note: If this is a C function, it might need to be whitelisted in 'zenc.json'
+```
+
+#### Whitelisting
+
+Se si utilizza frequentemente una specifica libreria C e si desidera mantenere `-Winterop` abilitato senza essere disturbati da funzioni specifiche, è possibile aggiungerle alla `c_function_whitelist` nel file di configurazione `zenc.json`.
 
 ---
 

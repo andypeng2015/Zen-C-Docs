@@ -118,13 +118,19 @@ Confira estes projetos construídos com Zen C:
         <li><a href="#9-programação-orientada-a-objetos">9. POO</a></li>
         <li><a href="#10-genéricos">10. Genéricos</a></li>
         <li><a href="#11-concorrência-asyncawait">11. Concorrência</a></li>
-        <li><a href="#12-metaprogramação">12. Metaprogramação</a></li>
-        <li><a href="#13-atributos">13. Atributos</a></li>
-        <li><a href="#14-assembly-inline">14. Assembly Inline</a></li>
-        <li><a href="#15-diretivas-de-build">15. Diretivas de Build</a></li>
-        <li><a href="#16-palavras-chave">16. Palavras-chave</a></li>
-        <li><a href="#17-interoperabilidade-c">17. Interoperabilidade C</a></li>
-        <li><a href="#18-framework-de-testes-unitários">18. Framework de Testes Unitários</a></li>
+        <li><a href="#12-avançado-e-metaprogramação">12. Avançado e Metaprogramação</a>
+          <ul>
+            <li><a href="#121-metaprogramação">12.1 Metaprogramação</a></li>
+            <li><a href="#122-atributos">12.2 Atributos</a></li>
+            <li><a href="#123-assembly-inline">12.3 Assembly Inline</a></li>
+            <li><a href="#124-sistema-de-diagnóstico">12.4 Sistema de Diagnóstico</a></li>
+            <li><a href="#125-diretivas-de-build">12.5 Diretivas de Build</a></li>
+            <li><a href="#126-palavras-chave">12.6 Palavras-chave</a></li>
+          </ul>
+        </li>
+        <li><a href="#13-interoperabilidade-c">13. Interoperabilidade C</a></li>
+        <li><a href="#14-framework-de-testes-unitários">14. Framework de Testes Unitários</a></li>
+        <li><a href="#15-sistema-de-diagnóstico">15. Sistema de Diagnóstico</a></li>
       </ul>
     </td>
   </tr>
@@ -1107,7 +1113,9 @@ fn main() {
 }
 ```
 
-### 12. Metaprogramação
+### 12. Avançado e Metaprogramação
+
+#### 12.1 Metaprogramação
 
 #### Comptime
 Execute código em tempo de compilação para gerar código ou imprimir mensagens.
@@ -1211,7 +1219,7 @@ fn fallback_init() { println "Nenhum backend selecionado"; }
 
 Múltiplos `@cfg` em uma declaração são combinados com AND. `not()` pode ser usado dentro de `any()` e `all()`. Funciona com qualquer declaração de nível superior: `fn`, `struct`, `import`, `impl`, `raw`, `def`, `test`, etc.
 
-### 13. Atributos
+#### 12.2 Atributos
 Decore funções e structs para modificar o comportamento do compilador.
 
 | Atributo | Escopo | Descrição |
@@ -1261,7 +1269,7 @@ Zen C fornece "Smart Derives" que respeitam a Semântica de Move (Move Semantics
     - Ao comparar dois structs non-Copy (`a == b`), o compilador automaticamente passa `b` por referência (`&b`) para evitar que ele seja movido.
     - Checagens recursivas de igualdade nos campos também preferem acesso ao ponteiro para prevenir transferência de propriedade.
     
-### 14. Assembly Inline
+#### 12.3 Assembly Inline
 
 Zen C fornece suporte de primeira classe para assembly inline, transpilando diretamente para `asm`de estilo GCC estendido.
 
@@ -1310,7 +1318,13 @@ fn add_five(x: int) -> int {
 
 > **Nota:** Ao utilizar sintaxe Intel (via `-masm=intel`), você deve garantir que seu build esteja configurado corretamente (por exemplo, `//> cflags: -masm=intel`). O TCC não suporta sintaxe assembly da Intel.
 
-### 15. Diretivas de Build
+#### 12.4 Sistema de Diagnóstico
+
+Zen C fornece um sistema de diagnóstico categorizado que pode ser controlado através das flags `-W` e `-Wno-`. Isso é útil para gerenciar avisos relacionados à segurança, código não utilizado e interoperabilidade C.
+
+[Mais informações sobre o Sistema de Diagnóstico](#15-sistema-de-diagnóstico)
+
+#### 12.5 Diretivas de Build
 
 Zen C suporta comentários especiais no topo de seu arquivo-fonte para configurar o processo de build sem precisar de um sistema de build complexo ou um Makefile.
 
@@ -1360,7 +1374,7 @@ import "raylib.h"
 fn main() { ... }
 ```
 
-### 16. Palavras-chave
+#### 12.6 Palavras-chave
 
 Zen C reserva as seguintes palavras-chave:
 
@@ -1383,7 +1397,7 @@ Os seguintes identificadores são reservados porque são palavras-chave em C11:
 #### Operadores
 `and`, `or`
 
-### 17. Interoperabilidade com C
+### 13. Interoperabilidade com C
 
 Zen C oferece duas formas  de interagir com código C: **Trusted Imports** (Forma conveniente) e **Explicit FFI** (Forma segura/precisa).
 
@@ -1415,17 +1429,110 @@ include <stdio.h> // Emite  #include <stdio.h> no C gerado
 extern fn printf(fmt: char*, ...) -> c_int;
 
 fn main() {
-    printf("Hello FFI: %d\n", 42); // Type checked by Zen C
+    printf("Olá FFI: %d\n", 42); // Tipos checados pelo Zen C
 }
 ```
 
-> **Prós**: Zen C garante correspondência de tipos.
+> **Prós**: Zen C garante que os tipos correspondam.
 > **Contras**: Requer declaração manual de funções.
 
 #### `import` vs `include`
 
-- **`import "file.h"`**: Registra o header como um módulo nomeado. Habilita acesso implícito aos símbolos (por exemplo, `file::function()`).
-- **`include <file.h>`**: Emite puramente `#include <file.h>` no código C gerado. Não introduz nenhum símbolo ao compilador Zen C; você deve usar `extern fn` para acessá-los.
+- **`import "file.h"`**: Registra o header como um módulo nomeado. Permite acesso implícito aos símbolos (ex: `file::function()`).
+- **`include <file.h>`**: Apenas emite `#include <file.h>` no código C gerado. Não introduz símbolos no compilador Zen C; você deve usar `extern fn` para acessá-los.
+
+### 14. Framework de Testes Unitários
+
+Zen C inclui um framework de testes integrado que permite que você escreva testes unitários diretamente em seus arquivos fonte usando a palavra-chave `test`.
+
+#### Sintaxe
+Um bloco `test` contém um nome descritivo e um corpo de código para execução. Testes não precisam de uma função `main` para rodar.
+
+```zc
+test "unittest1" {
+    "Isso é um teste unitário";
+
+    let a = 3;
+    assert(a > 0, "a deve ser um inteiro positivo");
+
+    "unittest1 passou.";
+}
+```
+
+#### Executando Testes
+Para rodar todos os testes em um arquivo, utilize o comando `run`. O compilador irá automaticamente detectar e executar todos os blocos `test` de nível superior.
+
+```bash
+zc run meu_arquivo.zc
+```
+
+#### Asserções
+Utilize a função embutida `assert(condition, message)` para verificar expectativas. Se a condição for falsa, o teste irá falhar e imprimir a mensagem fornecida.
+
+### 15. Sistema de Diagnóstico
+
+Zen C fornece um sistema de diagnóstico categorizado que permite controle granular sobre os avisos (warnings) do compilador. Isso permite manter altos padrões de qualidade de código enquanto reduz a fricção ao interagir com código C externo.
+
+#### Categorias de Diagnóstico
+
+Os avisos são agrupados em categorias lógicas. Cada categoria pode ser habilitada ou desabilitada globalmente usando flags do compilador.
+
+| Categoria | Descrição | Padrão |
+| :--- | :--- | :--- |
+| **`INTEROP`** | Avisos relacionados à importação de headers C e funções externas não definidas. | **OFF** |
+| **`PEDANTIC`** | Checagens extras rigorosas para potenciais problemas ou qualidade de código. | **OFF** |
+| **`UNUSED`** | Avisos para variáveis, parâmetros ou funções definidos mas não utilizados. | **ON** |
+| **`SAFETY`** | Avisos de segurança críticos, como acesso a ponteiros nulos ou divisão por zero. | **ON** |
+| **`LOGIC`** | Avisos relacionados à lógica, como código inalcançável ou comparações de constantes. | **ON** |
+| **`CONVERSION`** | Avisos para conversões de tipo implícitas ou estreitas (narrowing). | **ON** |
+| **`STYLE`** | Avisos de estilo de codificação, como sombreamento de variáveis (shadowing). | **ON** |
+
+#### Flags do Compilador
+
+Você pode controlar o diagnóstico usando as flags `-W` (habilitar) e `-Wno-` (desabilitar) seguidas por um nome de categoria ou um ID de diagnóstico específico.
+
+##### Flags de Categoria
+
+- `-Winterop`: Habilita todos os avisos relacionados à interoperabilidade.
+- `-Wno-unused`: Silencia especificamente avisos de variáveis/parâmetros não utilizados.
+- `-Wsafety`: Garante que todas as checagens de segurança estejam ativas.
+- `-Wall`: Habilita todas as principais categorias de diagnóstico.
+- `-Wextra`: Habilita diagnósticos ainda mais rigorosos (equivalente a `-Wpedantic`).
+
+##### Exemplo de Uso
+
+```bash
+# Compila com avisos de interoperabilidade C habilitados
+zc app.zc -Winterop
+
+# Compila com todos os avisos habilitados, exceto para código não utilizado
+zc app.zc -Wall -Wno-unused
+```
+
+#### Fricção na Interoperabilidade C
+
+Por padrão, Zen C suprime avisos de "Função não definida" para funções que provavelmente estão em bibliotecas padrão C (a categoria `INTEROP` está **OFF**).
+
+Se você deseja que o compilador sinalize rigorosamente cada função não definida (por exemplo, para encontrar erros de digitação), habilite a categoria interop:
+
+```bash
+zc main.zc -Winterop
+```
+
+Quando habilitado, o compilador fornecerá sugestões úteis para funções C comuns:
+```text
+warning: Undefined function 'abs'
+  --> main.zc:5:13
+   |
+5  |     let x = abs(-5);
+   |             ^ here
+   |
+   = note: If this is a C function, it might need to be whitelisted in 'zenc.json'
+```
+
+#### Whitelisting
+
+Se você usa frequentemente uma biblioteca C específica e deseja manter `-Winterop` habilitado sem ser incomodado por funções específicas, você pode adicioná-las no `c_function_whitelist` no arquivo de configuração `zenc.json`.
 
 ---
 
@@ -1778,33 +1885,6 @@ fn main() {
 > [!NOTE]
 > **Nota:** Interpolação de strings do Zen C funciona com objetos Objective-C (`id`) chamando `debugDescription` ou `description`.
 
-### 18. Framework de Testes Unitários
-
-O Zen C inclui um framework de testes integrado que permite escrever testes unitários diretamente nos arquivos-fonte usando a palavra-chave `test`.
-
-#### Sintaxe
-Um bloco `test` contém um nome descritivo e um corpo de código para execução. Os testes não exigem uma função `main` para serem executados.
-
-```zc
-test "unittest1" {
-    "Este é um teste unitário";
-
-    let a = 3;
-    assert(a > 0, "a deve ser um inteiro positivo");
-
-    "unittest1 passou.";
-}
-```
-
-#### Executando Testes
-Para executar todos os testes em um arquivo, use o comando `run`. O compilador detectará e executará automaticamente todos os blocos `test` de nível superior.
-
-```bash
-zc run meu_arquivo.zc
-```
-
-#### Asserções
-Use a função integrada `assert(condição, mensagem)` para verificar as expectativas. Se a condição for falsa, o teste falhará e imprimirá a mensagem fornecida.
 
 ---
 

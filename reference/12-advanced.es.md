@@ -6,7 +6,9 @@ weight = 12
 # 12. Avanzado y Metaprogramación
 
 
-### 12.1 Metaprogramación
+### Avanzado y Metaprogramación
+
+#### 12.1 Metaprogramación
 
 #### Comptime
 Ejecuta código en tiempo de compilación para generar código fuente o imprimir mensajes.
@@ -155,9 +157,9 @@ fn fallback_init() { println "No se seleccionó backend"; }
 | `@cfg(any(A, B, ...))` | Incluir si ALGUNA condición es verdadera (OR) |
 | `@cfg(all(A, B, ...))` | Incluir si TODAS las condiciones son verdaderas (AND) |
 
-Múltiples `@cfg` en una declaración se combinan con AND. `not()` se puede usar dentro de `any()` y `all()`. Funciona en cualquier declaración de nivel superior: `fn`, `struct`, `import`, `impl`, `raw`, `def`, `test`, etc.
+Múltiples `@cfg` en una declaración se combinan con AND. `not()` se puede usar dentro de `any()` y `all()`. Funciona con cualquier declaración de nivel superior: `fn`, `struct`, `import`, `impl`, `raw`, `def`, `test`, etc.
 
-### 12.2 Atributos
+#### 12.2 Atributos
 
 Decora funciones y structs para modificar el comportamiento del compilador.
 
@@ -208,7 +210,7 @@ Zen C proporciona "Derivaciones Inteligentes" que respetan la Semántica de Movi
     - Al comparar dos structs que no son Copy (`a == b`), el compilador pasa automáticamente `b` por referencia (`&b`) para evitar moverlo.
     - Las comprobaciones de igualdad recursivas en los campos también prefieren el acceso por puntero para prevenir la transferencia de posesión.
 
-### 12.3 Ensamblador Inline
+#### 12.3 Ensamblador Inline
 
 Zen C proporciona soporte de primera clase para ensamblador inline, transpilando directamente a `asm` extendido de estilo GCC.
 
@@ -249,23 +251,20 @@ fn sumar(x: int) -> int {
 }
 ```
 
-| Tipo | Sintaxis | Equivalente GCC |
-|:---|:---|:---|
-| **Salida** | `: out(variable)` | `"=r"(variable)` |
-| **Entrada** | `: in(variable)` | `"r"(variable)` |
-| **Clobber** | `: clobber("rax")` | `"rax"` |
 | **Memoria** | `: clobber("memory")` | `"memory"` |
 
 > **Nota:** Cuando uses la sintaxis de Intel (mediante `-masm=intel`), debes asegurarte de que tu construcción esté configurada correctamente (por ejemplo, `//> cflags: -masm=intel`). TCC no soporta el ensamblador con sintaxis Intel.
 
-### 12.4 Sistema de Diagnóstico
+| Tipo | Sintaxis | Equivalente GCC |
+|:---|:---|:---|
 
-Zen C proporciona un sistema de diagnóstico categorizado que se puede controlar mediante los indicadores `-W` and `-Wno-`. Esto es útil para gestionar advertencias relacionadas con la seguridad, el código no utilizado y la interoperabilidad con C.
+#### 12.4 Sistema de Diagnóstico
 
-[Leer más sobre el Sistema de Diagnóstico](15-diagnostics.es.md)
+Zen C proporciona un sistema de diagnóstico categorizado que se puede controlar a través de las banderas `-W` y `-Wno-`. Esto es útil para gestionar advertencias relacionadas con la seguridad, el código no utilizado y la interoperabilidad con C.
 
-### 12.5 Directivas de Construcción
+[Más información sobre el Sistema de Diagnóstico](#15-sistema-de-diagnóstico)
 
+#### 12.5 Directivas de Construcción
 Zen C soporta comentarios especiales en la parte superior de tu archivo fuente para configurar el proceso de construcción sin necesidad de un complejo sistema de construcción o Makefile.
 
 | Directiva | Argumentos | Descripción |
@@ -314,7 +313,7 @@ import "raylib.h"
 fn main() { ... }
 ```
 
-### 12.6 Palabras Clave
+#### 12.6 Palabras Clave
 
 Las siguientes palabras clave están reservadas en Zen C.
 

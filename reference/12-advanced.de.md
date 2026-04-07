@@ -6,7 +6,9 @@ weight = 12
 # 12. Fortgeschrittenes & Metaprogrammierung
 
 
-### 12.1 Metaprogrammierung
+### Fortgeschrittenes & Metaprogrammierung
+
+#### 12.1 Metaprogrammierung
 
 #### Comptime
 Führt Code zur Compile-Zeit aus, um Quellcode zu generieren oder Nachrichten auszugeben.
@@ -160,9 +162,9 @@ fn fallback_init() { println "Kein Backend ausgewählt"; }
 | `@cfg(any(A, B, ...))` | Einbinden, wenn IRGENDEINE Bedingung wahr ist (OR) |
 | `@cfg(all(A, B, ...))` | Einbinden, wenn ALLE Bedingungen wahr sind (AND) |
 
-Mehrere `@cfg` bei einer Deklaration werden mit AND verknüpft. `not()` kann innerhalb von `any()` und `all()` verwendet werden. Funktioniert bei jeder Top-Level-Deklaration: `fn`, `struct`, `import`, `impl`, `raw`, `def`, `test`, etc.
+Mehrere `@cfg` auf einer Deklaration werden ANDed. `not()` kann in `any()` und `all()` verwendet werden. Funktioniert mit jeder Deklaration auf oberster Ebene: `fn`, `struct`, `import`, `impl`, `raw`, `def`, `test` etc.
 
-### 12.2 Attribute
+#### 12.2 Attribute
 
 Dekoriere Funktionen und Strukturen, um das Verhalten des Compilers zu beeinflussen.
 
@@ -213,7 +215,7 @@ Zen C bietet "Smart Derives" mit Beachtung von Move-Semantics:
     - Beim Vergleich zweier non-Copy-Strukturen (`a == b`) wird `b` automatisch per Referenz (`&b`) übergeben, um Move zu vermeiden.  
     - Rekursive Feldvergleiche bevorzugen ebenfalls Pointer-Zugriff, um Besitzübergaben zu verhindern.
 
-### 12.3 Inline-Assembly
+#### 12.3 Inline-Assembly
 
 Zen C unterstützt Inline-Assembly vollständig, transpiliert direkt zu GCC-Extended `asm`.
 
@@ -263,13 +265,14 @@ fn summe(x: int) -> int {
 
 > **Hinweis:** Bei Verwendung der Intel-Syntax (über `-masm=intel`) muss der Build korrekt konfiguriert sein (z. B. `//> cflags: -masm=intel`). TCC unterstützt keine Assemblierung mit Intel-Syntax.
 
-### 12.4 Diagnosesystem
+#### 12.4 Diagnosesystem
 
-Zen C bietet ein kategorisiertes Diagnosesystem, das über die Flags `-W` und `-Wno-` gesteuert werden kann. Dies ist nützlich für die Verwaltung von Warnungen im Zusammenhang mit Sicherheit, nicht verwendetem Code und C-Interop.
+Zen C bietet ein kategorisiertes Diagnosesystem, das über die Flags `-W` und `-Wno-` gesteuert werden kann. Dies ist nützlich, um Warnungen in Bezug auf Sicherheit, ungenutzten Code und C-Interoperabilität zu verwalten.
 
-[Erfahren Sie mehr über das Diagnosesystem](15-diagnostics.de.md)
+[Weitere Informationen zum Diagnosesystem](#15-diagnosesystem)
 
-### 12.5 Build-Direktiven
+#### 12.5 Build-Direktiven
+
 
 Zen C unterstützt spezielle Kommentare am Anfang der Quellcode-Datei, um den Build-Prozess zu konfigurieren, ohne Makefile oder komplexes Build-System.
 
@@ -318,7 +321,8 @@ import "raylib.h"
 fn main() { ... }
 ```
 
-### 12.6 Schlüsselwörter
+#### 12.6 Schlüsselwörter
+
 
 Zen C reserviert folgende Schlüsselwörter:
 

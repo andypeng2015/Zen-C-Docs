@@ -119,13 +119,19 @@ Echa un vistazo a estos proyectos construidos con Zen C:
         <li><a href="#9-programación-orientada-a-objetos">9. POO</a></li>
         <li><a href="#10-genéricos">10. Genéricos</a></li>
         <li><a href="#11-concurrencia-asyncawait">11. Concurrencia</a></li>
-        <li><a href="#12-metaprogramación">12. Metaprogramación</a></li>
-        <li><a href="#13-atributos">13. Atributos</a></li>
-        <li><a href="#14-ensamblador-inline">14. Ensamblador Inline</a></li>
-        <li><a href="#15-directivas-de-construcción">15. Directivas de Construcción</a></li>
-        <li><a href="#16-palabras-clave">16. Palabras Clave</a></li>
-        <li><a href="#17-interoperabilidad-c">17. Interoperabilidad C</a></li>
-        <li><a href="#18-marco-de-pruebas-unitarias">18. Marco de Pruebas Unitarias</a></li>
+        <li><a href="#12-avanzado-y-metaprogramación">12. Avanzado y Metaprogramación</a>
+          <ul>
+            <li><a href="#121-metaprogramación">12.1 Metaprogramación</a></li>
+            <li><a href="#122-atributos">12.2 Atributos</a></li>
+            <li><a href="#123-ensamblador-inline">12.3 Ensamblador Inline</a></li>
+            <li><a href="#124-sistema-de-diagnóstico">12.4 Sistema de Diagnóstico</a></li>
+            <li><a href="#125-directivas-de-construcción">12.5 Directivas de Construcción</a></li>
+            <li><a href="#126-palabras-clave">12.6 Palabras Clave</a></li>
+          </ul>
+        </li>
+        <li><a href="#13-interoperabilidad-c">13. Interoperabilidad C</a></li>
+        <li><a href="#14-marco-de-pruebas-unitarias">14. Marco de Pruebas Unitarias</a></li>
+        <li><a href="#15-sistema-de-diagnóstico">15. Sistema de Diagnóstico</a></li>
       </ul>
     </td>
   </tr>
@@ -1106,7 +1112,9 @@ fn main() {
 }
 ```
 
-### 12. Metaprogramación
+### 12. Avanzado y Metaprogramación
+
+#### 12.1 Metaprogramación
 
 #### Comptime
 Ejecuta código en tiempo de compilación para generar código fuente o imprimir mensajes.
@@ -1255,7 +1263,7 @@ fn fallback_init() { println "No se seleccionó backend"; }
 
 Múltiples `@cfg` en una declaración se combinan con AND. `not()` se puede usar dentro de `any()` y `all()`. Funciona con cualquier declaración de nivel superior: `fn`, `struct`, `import`, `impl`, `raw`, `def`, `test`, etc.
 
-### 13. Atributos
+#### 12.2 Atributos
 
 Decora funciones y structs para modificar el comportamiento del compilador.
 
@@ -1306,7 +1314,7 @@ Zen C proporciona "Derivaciones Inteligentes" que respetan la Semántica de Movi
     - Al comparar dos structs que no son Copy (`a == b`), el compilador pasa automáticamente `b` por referencia (`&b`) para evitar moverlo.
     - Las comprobaciones de igualdad recursivas en los campos también prefieren el acceso por puntero para prevenir la transferencia de posesión.
 
-### 14. Ensamblador Inline
+#### 12.3 Ensamblador Inline
 
 Zen C proporciona soporte de primera clase para ensamblador inline, transpilando directamente a `asm` extendido de estilo GCC.
 
@@ -1347,17 +1355,20 @@ fn sumar(x: int) -> int {
 }
 ```
 
-| Tipo | Sintaxis | Equivalente GCC |
-|:---|:---|:---|
-| **Salida** | `: out(variable)` | `"=r"(variable)` |
-| **Entrada** | `: in(variable)` | `"r"(variable)` |
-| **Clobber** | `: clobber("rax")` | `"rax"` |
 | **Memoria** | `: clobber("memory")` | `"memory"` |
 
 > **Nota:** Cuando uses la sintaxis de Intel (mediante `-masm=intel`), debes asegurarte de que tu construcción esté configurada correctamente (por ejemplo, `//> cflags: -masm=intel`). TCC no soporta el ensamblador con sintaxis Intel.
 
-### 15. Directivas de Construcción
+| Tipo | Sintaxis | Equivalente GCC |
+|:---|:---|:---|
 
+#### 12.4 Sistema de Diagnóstico
+
+Zen C proporciona un sistema de diagnóstico categorizado que se puede controlar a través de las banderas `-W` y `-Wno-`. Esto es útil para gestionar advertencias relacionadas con la seguridad, el código no utilizado y la interoperabilidad con C.
+
+[Más información sobre el Sistema de Diagnóstico](#15-sistema-de-diagnóstico)
+
+#### 12.5 Directivas de Construcción
 Zen C soporta comentarios especiales en la parte superior de tu archivo fuente para configurar el proceso de construcción sin necesidad de un complejo sistema de construcción o Makefile.
 
 | Directiva | Argumentos | Descripción |
@@ -1406,7 +1417,7 @@ import "raylib.h"
 fn main() { ... }
 ```
 
-### 16. Palabras Clave
+#### 12.6 Palabras Clave
 
 Las siguientes palabras clave están reservadas en Zen C.
 
@@ -1429,7 +1440,7 @@ Los siguientes identificadores están reservados porque son palabras clave en C1
 #### Operadores
 `and`, `or`
 
-### 17. Interoperabilidad C
+### 13. Interoperabilidad C
 Zen C ofrece dos formas de interactuar con código C: **Importaciones de Confianza** (Conveniente) y **FFI Explícita** (Seguro/Preciso).
 
 #### Método 1: Importaciones de Confianza (Conveniente)
@@ -1515,7 +1526,7 @@ Zen C incluye una biblioteca estándar (`std`) que cubre las funcionalidades ese
 
 ---
 
-### 18. Marco de Pruebas Unitarias
+### 14. Marco de Pruebas Unitarias
 
 Zen C incluye un marco de pruebas integrado que permite escribir pruebas unitarias directamente en los archivos fuente utilizando la palabra clave `test`.
 
@@ -1545,7 +1556,73 @@ Usa la función integrada `assert(condición, mensaje)` para verificar las expec
 
 ---
 
+### 15. Sistema de Diagnóstico
+
+Zen C presenta un sistema de diagnóstico categorizado que proporciona un control granular sobre las advertencias del compilador. Esto ayuda a mantener altos estándares de calidad del código al tiempo que reduce la fricción al interactuar con código C externo.
+
+#### Categorías de Diagnóstico
+
+Las advertencias se agrupan en categorías lógicas. Cada categoría puede habilitarse o deshabilitarse globalmente mediante indicadores del compilador.
+
+| Categoría | Descripción | Por defecto |
+| :--- | :--- | :--- |
+| **`INTEROP`** | Advertencias relacionadas con las importaciones de cabeceras C y funciones externas no definidas. | **OFF** |
+| **`PEDANTIC`** | Comprobaciones extra rigurosas para problemas potenciales o calidad del código. | **OFF** |
+| **`UNUSED`** | Advertencias para variables, parámetros o funciones definidos pero no utilizados. | **ON** |
+| **`SAFETY`** | Advertencias críticas de seguridad como el acceso a punteros nulos o la división por cero. | **ON** |
+| **`LOGIC`** | Advertencias relacionadas con la lógica, como código inalcanzable o comparaciones de constantes. | **ON** |
+| **`CONVERSION`** | Advertencias para conversiones de tipo implícitas o restrictivas. | **ON** |
+| **`STYLE`** | Advertencias sobre el estilo de codificación, como el sombreado de variables (shadowing). | **ON** |
+
+#### Indicadores del Compilador
+
+Puedes controlar los diagnósticos utilizando las flags `-W` (activar) y `-Wno-` (desactivar) seguidas del nombre de una categoría o de un ID de diagnóstico específico.
+
+##### Indicadores de Categoría
+
+- `-Winterop`: Activa todas las advertencias relacionadas con la interoperabilidad.
+- `-Wno-unused`: Silencia específicamente las advertencias por variables/parámetros no utilizados.
+- `-Wsafety`: Asegura que todas las comprobaciones de seguridad estén activas.
+- `-Wall`: Activa todas las categorías de diagnóstico principales.
+- `-Wextra`: Activa diagnósticos aún más rigurosos (equivalente a `-Wpedantic`).
+
+##### Ejemplo de Uso
+
+```bash
+# Compilar con las advertencias de interoperabilidad C activadas
+zc app.zc -Winterop
+
+# Compilar con todas las advertencias activadas excepto para el código no utilizado
+zc app.zc -Wall -Wno-unused
+```
+
+#### Fricción en la Interoperabilidad C
+
+Por defecto, Zen C suprime las advertencias de "Función no definida" para las funciones que probablemente se encuentren en las bibliotecas estándar de C (la categoría `INTEROP` está **OFF**).
+
+Si deseas que el compilador marque estrictamente cada función no definida (por ejemplo, para detectar errores tipográficos), activa la categoría interop:
+
+```bash
+zc main.zc -Winterop
+```
+
+Cuando está activada, el compilador proporcionará sugerencias útiles para las funciones comunes de C:
+```text
+warning: Undefined function 'abs'
+  --> main.zc:5:13
+   |
+5  |     let x = abs(-5);
+   |             ^ here
+   |
+   = note: If this is a C function, it might need to be whitelisted in 'zenc.json'
+```
+
+#### Whitelisting
+
+Si utilizas con frecuencia una biblioteca C específica y deseas mantener `-Winterop` activado sin que te molesten funciones específicas, puedes añadirlas a la `c_function_whitelist` en el archivo de configuración `zenc.json`.
+
 ## Herramientas
+
 
 Zen C proporciona un Servidor de Lenguaje y un REPL integrados para mejorar la experiencia de desarrollo.
 
