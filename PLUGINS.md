@@ -1,170 +1,162 @@
 # Zen C Plugin System Guide
 
-Zen C offers a plugin system that allows you to extend the language syntax and transpilation process. Plugins act as compile-time hooks that can parse arbitrary text blocks and generate C code.
+Zen C offers a powerful, low-overhead plugin system that allows you to extend the language syntax and transpilation process. Plugins act as compile-time hooks that can parse arbitrary text blocks and generate standard C code.
 
 ## Quick Start
 
 ### Using a Plugin
 
-To use a plugin, import it using the `import plugin` syntax:
+To use a plugin, import it using the `import plugin` syntax. Zen C supports both native Zen C plugins (`.zc`) and legacy C plugins (`.so`).
 
 ```zc
-import plugin "regex" as re
-// or simple: import plugin "regex" (uses "regex" as identifier)
+import plugin "plugins/lisp" as lisp
 
 fn main() {
-    let valid = re! { ^[a-z]+$ };
+    lisp! {
+        (defun square (x) (* x x))
+        (print (square 10))
+    }
 }
 ```
 
 The syntax `alias! { ... }` invokes the plugin. The content inside the braces is passed as a raw string to the plugin's transpiler function.
 
+---
+
 ## Creating a Plugin
 
-Plugins are written in C and compiled into shared objects (or built-in to the compiler).
+Modern Zen C plugins are written natively in Zen C (`.zc`). This allows you to use high-level features like string interpolation and multiline blocks to generate C code cleanly.
 
-### API Reference (`zprep_plugin.h`)
+### API Reference (`std/plugin.zc`)
 
-The core API is simple. A plugin exposes a `ZPlugin` struct containing its name and a transpiler function.
+The core API consists of a few structured types that provide context and output streams.
 
-```c
-typedef struct {
-    // -> Context information
-    const char *filename;   // Current file being compiled
-    int current_line;       // Line number of the invocation
-    FILE *out;              // Output stream (injects code at call site)
-    FILE *hoist_out;        // Hoisted output (injects code at file scope)
-} ZApi;
-
-// -> The transpiler function
-// input_body: The raw text inside the plugin block { ... }
-// api: Access to transpiler context and output streams
-typedef void (*ZPluginTranspileFn)(const char *input_body, const ZApi *api);
-
-typedef struct {
-    char name[32];
-    ZPluginTranspileFn fn;
-} ZPlugin;
-```
-
-### Writing a Brainfuck Plugin
-
-Let's implement a plugin that compiles Brainfuck code directly into C logic at compile time.
-
-#### 1. Include the API
-
-```c
-#include "zprep_plugin.h"
-```
-
-#### 2. Implement the transpiler
-
-The transpiler function reads the Brainfuck source code and writes equivalent C code to `api->out`.
-
-```c
-void bf_transpile(const char *input_body, const ZApi *api)
-{
-    FILE *out = api->out;
+```zc
+struct ZApi {
+    api_version: u32,
+    filename: char*,
+    current_line: int,
+    out: void*,         // Primary output stream (injects code at call site)
+    hoist_out: void*,   // Hoisted output stream (injects code at top level)
     
-    // Initialize tape and pointer in a local block.
-    fprintf(out, "{\n");
-    fprintf(out, "    static unsigned char tape[30000] = {0};\n");
-    fprintf(out, "    unsigned char *ptr = tape;\n");
+    // Diagnostic reporting
+    error: fn*(ZApi*, char*, ...),
+    warn: fn*(ZApi*, char*, ...),
+    note: fn*(ZApi*, char*, ...),
 
-    const char *c = input_body;
-    while (*c)
-    {
-        switch (*c)
-        {
-        case '>': fprintf(out, "    ++ptr;\n"); break;
-        case '<': fprintf(out, "    --ptr;\n"); break;
-        case '+': fprintf(out, "    ++*ptr;\n"); break;
-        case '-': fprintf(out, "    --*ptr;\n"); break;
-        case '.': fprintf(out, "    putchar(*ptr);\n"); break;
-        case ',': fprintf(out, "    *ptr = getchar();\n"); break;
-        case '[': fprintf(out, "    while (*ptr) {\n"); break;
-        case ']': fprintf(out, "    }\n"); break;
-        }
-        c++;
-    }
-    fprintf(out, "}\n");
+    config: ZConfig,
+    user_data: void*
+}
+
+struct ZPlugin {
+    name: char[256],
+    handler: fn*(char*, ZApi*)
 }
 ```
 
-#### 3. Register the Plugin
+### Implementing a Brainfuck Plugin
 
-For dynamic plugins, you must export a `z_plugin_init` function that returns a pointer to your `ZPlugin` struct.
+Let's implement a plugin that compiles Brainfuck code directly into optimized C logic.
 
-```c
-ZPlugin brainfuck_plugin = {
-    .name = "brainfuck",
-    .fn = bf_transpile
+#### 1. Define the Transpiler
+
+A native Zen C plugin uses `f-strings` or `triple-quotes` to emit code.
+
+```zc
+import "std/plugin.zc"
+
+fn bf_transpile(input_body: char*, api: ZApi*) {
+    let out = api.out;
+    " { "; // Shorthand println to 'out'
+    " static unsigned char tape[30000] = {0}; ";
+    " unsigned char *ptr = tape; ";
+
+    let c = input_body;
+    while c[0] != 0 {
+        match c[0] {
+            '>' => " ++ptr; ",
+            '<' => " --ptr; ",
+            '+' => " ++*ptr; ",
+            '-' => " --*ptr; ",
+            '.' => " putchar(*ptr); ",
+            ',' => " *ptr = getchar(); ",
+            '[' => " while (*ptr) { ",
+            ']' => " } ",
+            _   => {}
+        }
+        c = &c[1];
+    }
+    " } ";
+}
+```
+
+#### 2. Register and Export
+
+Every plugin must export a `z_plugin_init` function.
+
+```zc
+let bf_plugin = ZPlugin {
+    name: "brainfuck",
+    handler: bf_transpile
 };
 
-// Entry point for the dynamic loader
-ZPlugin *z_plugin_init(void)
-{
-    return &brainfuck_plugin;
+@export
+fn z_plugin_init() -> ZPlugin* {
+    return &bf_plugin;
 }
 ```
 
-### Building the Plugin
+---
 
-Compile your plugin as a shared object (`.so`). You'll need access to `zprep_plugin.h`.
+## Best Practices: Clang and TCC Compatibility
+
+> [!IMPORTANT]
+> **Hoisting Function Definitions**
+>
+> If your plugin generates C function definitions (like a Lisp `defun`), you **MUST** write them to `api.hoist_out`. 
+>
+> Writing a function definition to `api.out` inside a Zen C block will result in a "nested function," which is a GCC extension not supported by standard C compilers like Clang or TCC.
+
+### Correct Hoisting Pattern:
+
+```zc
+fn lisp_transpile(body: char*, api: ZApi*) {
+    if (is_defun(body)) {
+        // Emit implementation to the top-level hoist buffer
+        fputs("static LVal my_func() { ... }", api.hoist_out);
+        
+        // Return a reference or identifier to the call site
+        fputs("my_func", api.out);
+    }
+}
+```
+
+---
+
+## Building and Testing
+
+### Building
+Zen C automatically detects and compiles `.zc` plugins when imported. However, you can manually build them with the `-shared` flag:
 
 ```bash
-# If building from source repository:
-gcc -shared -fPIC -o brainfuck.so brainfuck.c -I./plugins
-
-# If Zen C is installed system-wide:
-gcc -shared -fPIC -o brainfuck.so brainfuck.c -I/usr/local/include/zenc
+zc build my_plugin.zc -shared -o my_plugin.so
 ```
 
-### Using the Plugin
+### Unified Testing
+Maintain a clean test suite using the `make test-plugins` target in the core repository, or by creating a dedicated verification file:
 
-You can import plugins using relative paths or system-wide lookups:
+```bash
+# Run the unified plugin suite
+make test-plugins CC=clang
+```
+
+### Multiline Emission Example
+Use triple-quoted strings for large blocks of boilerplate:
 
 ```zc
-// Relative import (finds .so relative to this file)
-import plugin "./brainfuck.so" as bf
-
-// System import (finds .so in CWD or library path)
-import plugin "brainfuck.so" as bf2
-
-fn main() {
-    bf! {
-        ++++++++++[>+++++++>++++++++++>+++<<<-]>++.
-    }
-}
+fputs(f"""
+    /* Custom Runtime for {api.filename} */
+    typedef struct {{ ... }} Runtime;
+    static void init() {{ ... }}
+""", api.hoist_out);
 ```
-
-### Output example
-
-When you write:
-
-```zc
-bf! {
-    ++++++++++[>+++++++>++++++++++>+++<<<-]>++.
-}
-```
-
-The plugin generates:
-
-```c
-{
-    static unsigned char tape[30000] = {0};
-    unsigned char *ptr = tape;
-    ++*ptr;
-    ++*ptr;
-    // ... (logic for + and [ )
-    while (*ptr) {
-        ++ptr;
-        // ...
-    }
-    ptr++;
-    // ...
-    putchar(*ptr);
-}
-```
-
-This C code is then compiled by the backend, resulting in a highly optimized native binary from your DSL!
