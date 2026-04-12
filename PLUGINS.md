@@ -50,7 +50,8 @@ struct ZApi {
 
 struct ZPlugin {
     name: char[256],
-    handler: fn*(char*, ZApi*)
+    handler: fn*(char*, ZApi*),
+    hover_handler: fn*(char*, int, int) -> char*
 }
 ```
 
@@ -90,14 +91,39 @@ fn bf_transpile(input_body: char*, api: ZApi*) {
 }
 ```
 
-#### 2. Register and Export
+#### 2. LSP Hover Provider (Optional)
+
+You can provide a `hover_handler` to display markdown tooltips when a user hovers over syntax inside the plugin block. The handler receives the raw text body and the 0-indexed line/column relative to the start of the block.
+
+```zc
+fn bf_hover(body: char*, line: int, col: int) -> char* {
+    let p = body;
+    let r = 0; let c = 0;
+    while p[0] != 0 {
+        if r == line && c == col {
+            match (int)p[0] {
+                '>' => return "**:ptr++**: Increment the data pointer.",
+                '<' => return "**:ptr--**: Decrement the data pointer.",
+                // ...
+                _   => return NULL
+            }
+        }
+        if p[0] == 10 { r++; c = 0; } else { c++; }
+        p = &p[1];
+    }
+    return NULL;
+}
+```
+
+#### 3. Register and Export
 
 Every plugin must export a `z_plugin_init` function.
 
 ```zc
 let bf_plugin = ZPlugin {
     name: "brainfuck",
-    handler: bf_transpile
+    handler: bf_transpile,
+    hover_handler: bf_hover
 };
 
 @export

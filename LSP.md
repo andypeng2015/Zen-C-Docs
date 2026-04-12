@@ -88,4 +88,4 @@ For any editor that supports generic LSP clients:
 - **Diagnostics**: Real-time syntax and type errors.
 - **Go to Definition**: Jump to struct, function, and variable definitions.
 - **Autocompletion**: Context-aware suggestions for fields and methods.
-- **Hover**: Type information and documentation on hover.
+- **Hover**: Type information and documentation on hover (including custom DSL plugins).
