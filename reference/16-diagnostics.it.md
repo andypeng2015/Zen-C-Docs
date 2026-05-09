@@ -1,9 +1,9 @@
 +++
-title = "15. Sistema di Diagnostica"
-weight = 15
+title = "16. Sistema di Diagnostica"
+weight = 16
 +++
 
-# 15. Sistema di Diagnostica
+# 16. Sistema di Diagnostica
 
 
 Zen C presenta un sistema di diagnostica categorizzato che fornisce un controllo granulare sugli avvisi (warning) del compilatore. Ciò consente di mantenere elevati standard di qualità del codice riducendo al contempo l'attrito durante l'interazione con il codice C esterno.
@@ -72,5 +72,5 @@ Se si utilizza frequentemente una specifica libreria C e si desidera mantenere `
 ## Further Reading
 
 - **Language Server**: Vedi la [documentazione LSP](LSP.md) per l'integrazione con l'editor.
-- **MISRA Compliance**: Vedi [MISRA Rules](../reference/16-misra-rules) per il riferimento completo.
+- **MISRA Compliance**: Vedi [MISRA Rules](../reference/17-misra-rules) per il riferimento completo.
 - **Contributing**: Vedi [CONTRIBUTING.md](../CONTRIBUTING.md) per le linee guida.

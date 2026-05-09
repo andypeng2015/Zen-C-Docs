@@ -1,9 +1,9 @@
 +++
-title = "15. Diagnosesystem"
-weight = 15
+title = "16. Diagnosesystem"
+weight = 16
 +++
 
-# 15. Diagnosesystem
+# 16. Diagnosesystem
 
 
 Zen C bietet ein kategorisiertes Diagnosesystem, das eine granulare Kontrolle über Compiler-Warnungen ermöglicht. Dies hilft dabei, hohe Standards für die Codequalität einzuhalten und gleichzeitig die Reibung bei der Interaktion mit externem C-Code zu verringern.
@@ -72,5 +72,5 @@ Wenn du häufig eine bestimmte C-Bibliothek verwendest und `-Winterop` aktiviert
 ## Further Reading
 
 - **Language Server**: Siehe die [LSP-Dokumentation](../LSP.md) für die Editor-Integration.
-- **MISRA Compliance**: Siehe [MISRA Rules](16-misra-rules) für die vollständige Regelreferenz.
+- **MISRA Compliance**: Siehe [MISRA Rules](17-misra-rules) für die vollständige Regelreferenz.
 - **Contributing**: Siehe [Contributing Guide](../README.md#contributing) für die Beitragsrichtlinien.

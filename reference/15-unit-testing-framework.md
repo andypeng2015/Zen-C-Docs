@@ -1,9 +1,9 @@
 +++
-title = "14. Unit Testing Framework"
-weight = 14
+title = "15. Unit Testing Framework"
+weight = 15
 +++
 
-# 14. Unit Testing Framework
+# 15. Unit Testing Framework
 
 
 Zen C features a built-in testing framework with **per-test isolation**, **named output**, and **non-fatal assertions**.

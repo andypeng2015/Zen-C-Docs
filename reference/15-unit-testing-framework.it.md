@@ -1,9 +1,9 @@
 +++
-title = "14. Framework di Test Unitari"
-weight = 14
+title = "15. Framework di Test Unitari"
+weight = 15
 +++
 
-# 14. Framework di Test Unitari
+# 15. Framework di Test Unitari
 
 
 Zen C include un framework di test integrato con **isolamento per-test**, **output nominativo**, e **asserzioni non-fatali**.

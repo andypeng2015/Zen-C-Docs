@@ -1,9 +1,9 @@
 +++
-title = "13. C 互操作性"
-weight = 13
+title = "14. C 互操作性"
+weight = 14
 +++
 
-# 13. C 互操作性
+# 14. C 互操作性
 
 
 Zen C 提供畫兩種與 C 程式碼交互的方式：**信任導入 (Trusted Imports)** (方便) 和 **顯式 FFI** (安全/精確)。

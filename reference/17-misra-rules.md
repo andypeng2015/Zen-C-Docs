@@ -1,9 +1,9 @@
 +++
-title = "16. MISRA Rules"
-weight = 16
+title = "17. MISRA Rules"
+weight = 17
 +++
 
-# 16. MISRA Rules
+# 17. MISRA Rules
 
 Zen C includes a **MISRA C:2012 compliance mode** activated with the `--misra` flag.
 In addition to standard MISRA checks, the compiler enforces several **Zen-specific rules**

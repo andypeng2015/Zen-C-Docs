@@ -1,9 +1,9 @@
 +++
-title = "15. 诊断系统"
-weight = 15
+title = "16. 诊断系统"
+weight = 16
 +++
 
-# 15. 诊断系统
+# 16. 诊断系统
 
 
 Zen C 提供了一个分类诊断系统，可以对编译器警告进行粒度控制。这有助于在保持高代码质量标准的同时，减少与外部 C 代码交互时的摩擦。
@@ -115,5 +115,5 @@ Zen C 包含一个涵盖基本功能的标准库 (`std`)。
 ## Further Reading
 
 - **Language Server**: 查看 [LSP 文档](../LSP.md) 了解编辑器集成。
-- **MISRA Compliance**: 查看 [MISRA Rules](16-misra-rules) 获取完整规则参考。
+- **MISRA Compliance**: 查看 [MISRA Rules](17-misra-rules) 获取完整规则参考。
 - **Contributing**: 查看 [Contributing Guide](../README.md#contributing) 了解贡献指南。

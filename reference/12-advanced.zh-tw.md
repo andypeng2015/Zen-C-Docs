@@ -10,56 +10,6 @@ weight = 12
 
 #### 12.1 元編程
 
-#### Comptime
-在編譯時運行程式碼以生成原始碼或列印訊息。
-```zc
-comptime {
-    // 在編譯時生成程式碼(寫入 stdout)
-    println "let build_date = \"2024-01-01\";";
-}
-
-println "Build Date: {build_date}";
-```
-
-**輔助函式**
-
-`comptime` 區塊內可用的特殊函式:
-- **`yield(str)`** - 明確輸出生成的程式碼(printf 的替代方案)
-- **`compile_error(msg)`** - 以致命錯誤訊息停止編譯
-- **`compile_warn(msg)`** - 發出編譯時警告(允許繼續編譯)
-
-```zc
-comptime {
-    compile_warn("正在生成最佳化程式碼...");
-    
-    let ENABLE_FEATURE = 1;
-    if (ENABLE_FEATURE == 0) {
-        compile_error("必須啟用功能!");
-    }
-    
-    println "let FEATURE_ENABLED = 1;";
-}
-```
-
-**構建元數據**
-
-在編譯時存取編譯器構建資訊:
-- **`__COMPTIME_TARGET__`** - 平台字串: `"linux"`, `"windows"` 或 `"macos"`
-- **`__COMPTIME_FILE__`** - 當前正在編譯的原始檔案名稱
-
-```zc
-comptime {
-    // 平台特定的程式碼生成
-    println "let PLATFORM = \"{__COMPTIME_TARGET__}\";";
-}
-
-println "運行於: {PLATFORM}";
-```
-
-{% alert(type="tip") %}
-在 comptime 字串內使用 `{{` 和 `}}` 來轉義大括號。
-{% end %}
-
 #### Embed
 將文件嵌入為指定類型。
 ```zc
@@ -141,7 +91,6 @@ fn fallback_init() { println "未選擇後端"; }
 | `@global` | 函數 | CUDA: 內核入口點 (`__global__`)。 |
 | `@device` | 函數 | CUDA: 設備函數 (`__device__`)。 |
 | `@host` | 函數 | CUDA: 主機函數 (`__host__`)。 |
-| `@comptime` | 函數 | 用於編譯時執行的輔助函數。 |
 | `@cfg(NAME)` | 任意 | 條件編譯：僅在傳遞 `-DNAME` 時包含。支援 `not()`、`any()`、`all()`。 |
 | `@derive(...)` | 結構體 | 自動實現 Trait。支持 `Debug`, `Eq` (智能派生), `Copy`, `Clone`。 |
 | `@ctype("type")` | 函數參數 | 覆蓋參數生成的 C 類型。 |
