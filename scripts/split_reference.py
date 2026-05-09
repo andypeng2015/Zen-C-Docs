@@ -21,6 +21,7 @@ MAPPING = {
     "13.": "13-interop.md",
     "14.": "14-unit-testing-framework.md",
     "15.": "15-diagnostics.md",
+    "16.": "16-misra-rules.md",
 }
 
 WEIGHTS = {
@@ -156,6 +157,11 @@ def process_file(filename):
             out_name = target_filename.replace(".md", f".{lang}.md")
             
         out_path = os.path.join(TARGET_DIR, out_name)
+        
+        # Skip if the file already exists — manual edits in reference/ take priority
+        if os.path.exists(out_path):
+            print(f"  Skipping {out_name} — already exists, keeping manual edits")
+            continue
         
         # Combine parts for grouped files (like 12-advanced)
         combined_body = ""
