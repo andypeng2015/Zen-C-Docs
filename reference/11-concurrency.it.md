@@ -32,7 +32,7 @@ async fn task(n: int) -> int {
 }
 
 fn main() {
-    // Chiamate sequenziali — ogni await completa prima del successivo
+    // Chiamate sequenziali -- ogni await completa prima del successivo
     let a = await task(5);
     let b = await task(a);
 }

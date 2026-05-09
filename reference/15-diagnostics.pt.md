@@ -114,6 +114,6 @@ O Zen C inclui a biblioteca padrão (`std`), que cobre as funcionalidades essenc
 
 ## Further Reading
 
-- **Language Server**: Veja a [documentação LSP](LSP.md) para integração com o editor.
-- **MISRA Compliance**: Veja [MISRA Rules](../reference/16-misra-rules) para a referência completa de regras.
-- **Contributing**: Veja [CONTRIBUTING_PT_BR.md](../CONTRIBUTING_PT_BR.md) para as diretrizes de contribuição.
+- **Language Server**: Veja a [documentação LSP](../LSP.md) para integração com o editor.
+- **MISRA Compliance**: Veja [MISRA Rules](16-misra-rules) para a referência completa de regras.
+- **Contributing**: Veja [Contributing Guide](../README.md#contributing) para as diretrizes de contribuição.

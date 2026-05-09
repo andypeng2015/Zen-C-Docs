@@ -71,6 +71,6 @@ Wenn du häufig eine bestimmte C-Bibliothek verwendest und `-Winterop` aktiviert
 
 ## Further Reading
 
-- **Language Server**: Siehe die [LSP-Dokumentation](LSP.md) für die Editor-Integration.
-- **MISRA Compliance**: Siehe [MISRA Rules](../reference/16-misra-rules) für die vollständige Regelreferenz.
-- **Contributing**: Siehe [CONTRIBUTING_DE.md](../CONTRIBUTING_DE.md) für die Beitragsrichtlinien.
+- **Language Server**: Siehe die [LSP-Dokumentation](../LSP.md) für die Editor-Integration.
+- **MISRA Compliance**: Siehe [MISRA Rules](16-misra-rules) für die vollständige Regelreferenz.
+- **Contributing**: Siehe [Contributing Guide](../README.md#contributing) für die Beitragsrichtlinien.

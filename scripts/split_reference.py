@@ -158,9 +158,9 @@ def process_file(filename):
             
         out_path = os.path.join(TARGET_DIR, out_name)
         
-        # Skip if the file already exists — manual edits in reference/ take priority
+        # Skip if the file already exists -- manual edits in reference/ take priority
         if os.path.exists(out_path):
-            print(f"  Skipping {out_name} — already exists, keeping manual edits")
+            print(f"  Skipping {out_name} -- already exists, keeping manual edits")
             continue
         
         # Combine parts for grouped files (like 12-advanced)

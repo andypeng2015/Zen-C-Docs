@@ -1,0 +1,95 @@
+<!-- MISRA Rules Coverage Table Shortcode -->
+<!-- Usage: {% misra_table() %} in any markdown file -->
+
+{% set rules = load_data(path="data/misra_rules.toml") %}
+{% set total = 0 %}
+{% for chapter, data in rules.chapters %}
+  {% set total = total + data.rules | length %}
+{% endfor %}
+
+<style>
+.misra-summary {
+  display: flex; gap: 1.5rem; flex-wrap: wrap; margin: 1.5rem 0;
+}
+.misra-stat {
+  background: var(--card-bg, #f6f8fa); border: 1px solid var(--border, #d0d7de);
+  border-radius: 8px; padding: 1rem 1.5rem; text-align: center; flex: 1; min-width: 120px;
+}
+.misra-stat-value { font-size: 1.8rem; font-weight: 700; color: var(--accent, #0969da); }
+.misra-stat-label { font-size: 0.85rem; color: var(--text-muted, #656d76); margin-top: 0.25rem; }
+.misra-chapter {
+  border: 1px solid var(--border, #d0d7de); border-radius: 6px; margin: 0.5rem 0; overflow: hidden;
+}
+.misra-chapter-header {
+  background: var(--card-bg, #f6f8fa); padding: 0.75rem 1rem; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  font-weight: 600; user-select: none;
+}
+.misra-chapter-header:hover { background: var(--hover-bg, #eaeef2); }
+.misra-chapter-header .arrow { transition: transform 0.2s; }
+.misra-chapter.open .misra-chapter-header .arrow { transform: rotate(90deg); }
+.misra-table { width: 100%; border-collapse: collapse; }
+.misra-table th { text-align: left; padding: 0.5rem 1rem; font-size: 0.85rem; 
+  border-bottom: 2px solid var(--border, #d0d7de); color: var(--text-muted, #656d76); }
+.misra-table td { padding: 0.5rem 1rem; border-bottom: 1px solid var(--border, #d0d7de); font-size: 0.9rem; }
+.misra-table tr:last-child td { border-bottom: none; }
+.misra-table .status { text-align: center; }
+.misra-table .status-yes { color: #1a7f37; }
+.misra-body { display: none; }
+.misra-chapter.open .misra-body { display: block; }
+</style>
+
+<div class="misra-summary">
+  <div class="misra-stat">
+    <div class="misra-stat-value">{{ rules.chapters | length }}</div>
+    <div class="misra-stat-label">Chapters</div>
+  </div>
+  <div class="misra-stat">
+    <div class="misra-stat-value">{{ total }}</div>
+    <div class="misra-stat-label">Rules Checked</div>
+  </div>
+  <div class="misra-stat">
+    <div class="misra-stat-value">100%</div>
+    <div class="misra-stat-label">Coverage</div>
+  </div>
+</div>
+
+{% for key, chapter in rules.chapters %}
+<div class="misra-chapter" onclick="this.classList.toggle('open')">
+  <div class="misra-chapter-header">
+    <span>Chapter {{ chapter.number }}: {{ chapter.title }}</span>
+    <span>
+      <span style="font-weight:400;color:var(--text-muted,#656d76);margin-right:0.5rem">{{ chapter.rules | length }} rules</span>
+      <span class="arrow">&#9654;</span>
+    </span>
+  </div>
+  <div class="misra-body">
+    <table class="misra-table">
+      <thead>
+        <tr>
+          <th style="width:100px">Rule</th>
+          <th>Summary</th>
+          <th style="width:80px" class="status">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for rule in chapter.rules %}
+        <tr>
+          <td>{{ chapter.number }}.{{ rule.number }}</td>
+          <td>{{ rule.summary }}</td>
+          <td class="status"><span class="status-yes">&#10003; Checked</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endfor %}
+
+<script>
+// Open first chapter by default
+document.addEventListener('DOMContentLoaded', function() {
+  var first = document.querySelector('.misra-chapter');
+  if (first) first.classList.add('open');
+});
+</script>

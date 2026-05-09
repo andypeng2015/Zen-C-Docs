@@ -43,7 +43,7 @@ Die Ausgabe zeigt jeden Test mit Namen:
 | Funktion | Verhalten |
 |:---|:---|
 | `assert(cond, msg)` | Zeichnet Fehler auf, fährt mit nächstem Test fort |
-| `expect(cond, msg)` | Nicht-fatale Assertion — zeichnet Fehler auf, fährt im selben Test fort |
+| `expect(cond, msg)` | Nicht-fatale Assertion -- zeichnet Fehler auf, fährt im selben Test fort |
 
 ```zc
 test "beispiel" {

@@ -38,7 +38,7 @@ Output shows each test by name:
 | Function | Behavior |
 |:---|:---|
 | `assert(cond, msg)` | Records failure, continues to next test |
-| `expect(cond, msg)` | Non-fatal — records failure but continues within the same test |
+| `expect(cond, msg)` | Non-fatal -- records failure but continues within the same test |
 
 Use `expect` when you want to verify multiple conditions without short-circuiting:
 

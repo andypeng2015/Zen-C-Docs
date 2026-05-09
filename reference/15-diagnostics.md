@@ -71,6 +71,6 @@ If you frequently use a specific C library and want to keep `-Winterop` enabled 
 
 ## Further Reading
 
-- **Language Server**: See the [LSP documentation](LSP.md) for editor integration.
-- **MISRA Compliance**: See [MISRA Rules](../reference/16-misra-rules) for the full rule reference.
-- **Contributing**: See [CONTRIBUTING.md](../CONTRIBUTING.md) for contribution guidelines.
+- **Language Server**: See the [LSP documentation](../LSP.md) for editor integration.
+- **MISRA Compliance**: See the [MISRA Rules](16-misra-rules) chapter for the full rule reference.
+- **Contributing**: See the [Contributing Guide](../README.md#contributing) for contribution guidelines.

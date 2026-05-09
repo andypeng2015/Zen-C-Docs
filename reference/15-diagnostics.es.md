@@ -71,6 +71,6 @@ Si utilizas con frecuencia una biblioteca C específica y deseas mantener `-Wint
 
 ## Further Reading
 
-- **Language Server**: Consulte la [documentación LSP](LSP.md) para la integración con el editor.
-- **MISRA Compliance**: Consulte [MISRA Rules](../reference/16-misra-rules) para la referencia completa de reglas.
-- **Contributing**: Consulte [CONTRIBUTING_ES.md](../CONTRIBUTING_ES.md) para las pautas de contribución.
+- **Language Server**: Consulte la [documentación LSP](../LSP.md) para la integración con el editor.
+- **MISRA Compliance**: Consulte [MISRA Rules](16-misra-rules) para la referencia completa de reglas.
+- **Contributing**: Consulte [Contributing Guide](../README.md#contributing) para las pautas de contribución.

@@ -75,7 +75,7 @@ def compile_code(code, file_hint="example"):
     has_import = any(l.strip().startswith('import ') for l in lines)
     
     if not has_fn and not has_test and not has_import:
-        # It's probably a loose expression or statement — wrap in a test
+        # It's probably a loose expression or statement -- wrap in a test
         code = f'test "doc_example" {{\n    {code.strip()}\n}}'
     
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -114,7 +114,7 @@ def main():
     
     zc = find_zc()
     if not zc:
-        print("::warning::zc compiler not found — skipping code verification")
+        print("::warning::zc compiler not found -- skipping code verification")
         sys.exit(0)
     
     total = 0

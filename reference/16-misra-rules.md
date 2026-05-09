@@ -9,121 +9,195 @@ Zen C includes a **MISRA C:2012 compliance mode** activated with the `--misra` f
 In addition to standard MISRA checks, the compiler enforces several **Zen-specific rules**
 that promote safer, more maintainable code.
 
-## Enabling MISRA mode
+#### Enabling MISRA mode
 
 ```bash
 zc build app.zc --misra
 ```
 
-## Zen-Specific Rules
+Violations are reported as compiler errors at compile time:
 
-These rules are unique to Zen C and go beyond the standard MISRA C:2012 guidelines.
+```text
+error: MISRA Rule Zen 2.2: tuple with 3 or more fields shall be replaced
+       with a named struct (use 'struct' instead of positional tuple)
+  --> app.zc:5:1
+   |
+ 5 | fn get_stats() -> (int, int, int) { ... }
+```
 
-### Zen 1.1 — No raw blocks
+{% alert(type="note") %}
+The MISRA standard text is copyright MISRA Consortium Ltd. Zen C's implementation
+checks conformance but does not reproduce the standard. For the official rule
+definitions, refer to the [MISRA C:2012](https://www.misra.org.uk/) documentation.
+{% end %}
+
+#### Zen-Specific Rules
+
+These rules are unique to Zen C. Each rule is checked when `--misra` is active.
+
+#### Zen 1.1 -- No raw blocks
 
 Forbids `raw { }` blocks that bypass the transpiler.
 
 ```zc
-// Violation:
+// ❌ Violation:
 fn main() {
-    raw { int x = 10; }  // Zen 1.1
+    raw { int x = 10; }
+}
+
+// ✅ Fix: use native Zen C constructs
+fn main() {
+    let x = 10;
 }
 ```
 
-Fix: use Zen C constructs instead.
+#### Zen 1.2 -- No plugin blocks
 
-### Zen 1.2 — No plugin blocks
+Forbids `plugin ... end` blocks, which execute arbitrary build-time code.
 
-Forbids `plugin ... end` blocks that execute build-time code.
+```zc
+// ❌ Violation:
+plugin my_plugin
 
-### Zen 1.3 — Exhaustive enum match
+// ✅ Fix: implement functionality as a regular function or import a library
+import "std/some_module.zc"
+```
 
-Requires all variants to be handled explicitly in `match` on enum types. The `_` wildcard
-is forbidden for enums.
+#### Zen 1.3 -- Exhaustive enum match
+
+Forbids the `_` wildcard in `match` on enum types -- all variants must be handled explicitly.
 
 ```zc
 enum Color { Red; Green; Blue; }
 
+// ❌ Violation:
 fn describe(c: Color) {
     match c {
-        Color::Red => { ... }
-        Color::Green => { ... }
-        // Missing Blue — Zen 1.3 violation
+        Color::Red => { println "red"; }
+        Color::Green => { println "green"; }
+        // Missing Blue -- Zen 1.3
+    }
+}
+
+// ✅ Fix: handle all variants
+fn describe(c: Color) {
+    match c {
+        Color::Red => { println "red"; }
+        Color::Green => { println "green"; }
+        Color::Blue => { println "blue"; }
     }
 }
 ```
 
-### Zen 1.4 — No preprocessor directives
+#### Zen 1.4 -- No preprocessor directives
 
 Forbids C preprocessor directives (`#define`, `#include`, `#if`, etc.).
 Use Zen's `import` and `def` instead.
 
-### Zen 1.5 — No `var` / `const` for declarations
-
-Forbids the deprecated `var` and `const` keywords for variable/constant declarations.
-Use `let` for variables and `def` for constants.
-
-### Zen 1.8 — No identifier shadowing
-
-Forbids declaring an identifier that shadows one from an outer scope.
-
-### Zen 2.1 — No reserved identifiers
-
-Forbids identifiers starting with `__`, `_[A-Z]`, or `_z_`, as these
-are reserved for the compiler and C implementation.
-
-### Zen 2.2 — Tuple size limit
-
-Tuples with **3 or more fields** shall not be used as function return types or parameters.
-Use a named struct instead.
-
 ```zc
-// Violation:
-fn stats() -> (int, int, int) { ... }  // Zen 2.2
+// ❌ Violation:
+#define BUFFER_SIZE 256
+#include <stdio.h>
 
-// OK:
-fn pair() -> (int, int) { ... }        // 2-tuples exempt
+// ✅ Fix:
+def BUFFER_SIZE = 256;
+import "std/io.zc"
 ```
 
-### Zen 2.3 — String comparison
+#### Zen 1.5 -- No `var` / `const` for declarations
+
+The `var` and `const` keywords are deprecated for variable/constant declarations.
+Use `let` for variables and `def` for compile-time constants.
+
+```zc
+// ❌ Violation:
+var x = 10;
+const MAX = 100;
+
+// ✅ Fix:
+let x = 10;
+def MAX = 100;
+```
+
+> The `const` keyword remains valid as a **type qualifier** for C interop
+> (e.g., `const int` means "pointer to const int" in FFI declarations).
+
+#### Zen 1.8 -- No identifier shadowing
+
+Forbids declaring a name that hides one from an outer scope.
+
+```zc
+// ❌ Violation:
+let x = 10;
+if true {
+    let x = 20;  // shadows outer x
+}
+
+// ✅ Fix: use a distinct name
+let x = 10;
+if true {
+    let inner_x = 20;
+}
+```
+
+#### Zen 2.1 -- No reserved identifiers
+
+Forbids identifiers starting with `__`, `_[A-Z]`, or `_z_`, which are reserved
+for the compiler and C implementation.
+
+```zc
+// ❌ Violation:
+let __my_var = 10;
+let _Reserved = 20;
+let _z_internal = 30;
+
+// ✅ Fix: use non-reserved names
+let my_var = 10;
+let reserved = 20;
+let internal = 30;
+```
+
+#### Zen 2.2 -- Tuple size limit
+
+Tuples with **3 or more fields** shall not be used as function return types or
+parameters. Use a named struct instead. 2-tuples are exempt.
+
+```zc
+// ❌ Violation:
+fn get_stats() -> (int, int, int) { ... }
+
+// ❌ Violation:
+fn process(p: (int, string, bool)) { ... }
+
+// ✅ OK:
+struct Stats { sum: int; avg: int; max: int; }
+fn get_stats() -> Stats { ... }
+
+// ✅ OK (2-tuples exempt):
+fn get_pair() -> (int, int) { ... }
+```
+
+#### Zen 2.3 -- String comparison
 
 `string == string` shall not be used. Use `strcmp()` instead.
 
 ```zc
-// Violation:
-if a == b { ... }  // Zen 2.3 (when a, b are string)
+// ❌ Violation:
+if a == b { ... }  // when a, b are string
 
-// OK:
+// ✅ Fix:
 if strcmp(a, b) == 0 { ... }
+
+// ✅ OK (non-string types):
+if x == y { ... }   // int, bool, pointer comparisons are safe
 ```
 
 ## Standard MISRA C:2012 Coverage
 
-The compiler checks a broad set of standard MISRA C:2012 rules. These include:
+The compiler checks the following standard MISRA C:2012 rules.
+Click on a chapter to expand the rule list.
 
-| Chapter | Area | Rules |
-|---------|------|-------|
-| Dir 4 | Development process | 3 directives |
-| 1 | Environment | 2 rules |
-| 2 | Unused code | 7 rules |
-| 5 | Identifiers | 9 rules |
-| 6 | Types | 2 rules |
-| 7 | Literals | 4 rules |
-| 8 | Declarations | 14 rules |
-| 9 | Initialization | 5 rules |
-| 10 | Essential type model | 8 rules |
-| 11 | Pointer conversions | 9 rules |
-| 12 | Expressions | 4 rules |
-| 13 | Side effects | 6 rules |
-| 14 | Control flow | 4 rules |
-| 15 | If/switch statements | 7 rules |
-| 16 | Match/switch | 7 rules |
-| 17 | Functions | 8 rules |
-| 18 | Pointers/arrays | 8 rules |
-| 19 | Overlapping storage | 2 rules |
-| 20 | Preprocessor | 14 rules |
-| 21 | Standard libraries | 13 rules |
-| 22 | Resources | 6 rules |
+{% misra_table() %}
 
 For the complete rule text, refer to the official
 [MISRA C:2012](https://www.misra.org.uk/) documentation.

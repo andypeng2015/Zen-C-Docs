@@ -42,7 +42,7 @@ zc run my_file.zc
 | 函數 | 行為 |
 |:---|:---|
 | `assert(cond, msg)` | 記錄失敗，繼續下一個測試 |
-| `expect(cond, msg)` | 非致命 — 記錄失敗但在同一測試中繼續執行 |
+| `expect(cond, msg)` | 非致命 -- 記錄失敗但在同一測試中繼續執行 |
 
 ```zc
 test "範例" {

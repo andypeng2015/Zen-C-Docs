@@ -114,6 +114,6 @@ Zen C 包含一個涵蓋基本功能的標準庫 (`std`)。
 
 ## Further Reading
 
-- **Language Server**: 查看 [LSP 文件](LSP.md) 了解編輯器整合。
-- **MISRA Compliance**: 查看 [MISRA Rules](../reference/16-misra-rules) 取得完整規則參考。
-- **Contributing**: 查看 [CONTRIBUTING.md](../CONTRIBUTING.md) 了解貢獻指南。
+- **Language Server**: 查看 [LSP 文件](../LSP.md) 了解編輯器整合。
+- **MISRA Compliance**: 查看 [MISRA Rules](16-misra-rules) 取得完整規則參考。
+- **Contributing**: 查看 [Contributing Guide](../README.md#contributing) 了解貢獻指南。

@@ -36,7 +36,7 @@ L'output mostra ogni test per nome:
 | Funzione | Comportamento |
 |:---|:---|
 | `assert(cond, msg)` | Registra il fallimento, continua al test successivo |
-| `expect(cond, msg)` | Non-fatale — registra il fallimento ma continua nello stesso test |
+| `expect(cond, msg)` | Non-fatale -- registra il fallimento ma continua nello stesso test |
 
 ```zc
 test "esempio" {
