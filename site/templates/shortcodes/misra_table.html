@@ -1,7 +1,7 @@
-<!-- MISRA Rules Coverage Table Shortcode -->
-<!-- Usage: {% misra_table() %} in any markdown file -->
+{# MISRA Rules Coverage Table Shortcode #}
+{# Usage: {{/* misra_table() */}} in any markdown file -- use {% misra_table() %} #}
 
-{% set rules = load_data(path="data/misra_rules.toml") %}
+{% set rules = load_data(path="misra_rules.toml") %}
 {% set total = 0 %}
 {% for chapter, data in rules.chapters %}
   {% set total = total + data.rules | length %}
